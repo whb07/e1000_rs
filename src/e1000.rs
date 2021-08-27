@@ -1,12 +1,10 @@
+use core::num::dec2flt::number::Number;
+
 use crate::deps::timer::{
     atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t,
     work_struct,
 };
-use crate::e1000_hw::{
-    e1000_1000t_rx_status, e1000_10bt_ext_dist_enable, e1000_auto_x_mode, e1000_cable_length,
-    e1000_downshift, e1000_hw, e1000_hw_stats, e1000_phy_stats, e1000_polarity_reversal,
-    e1000_rev_polarity,
-};
+use crate::e1000_hw::{e1000_1000t_rx_status, e1000_10bt_ext_dist_enable, e1000_auto_x_mode, e1000_cable_length, e1000_context_desc, e1000_downshift, e1000_hw, e1000_hw_stats, e1000_phy_stats, e1000_polarity_reversal, e1000_rev_polarity, e1000_rx_desc, e1000_tx_desc};
 
 pub const PCI_VENDOR_ID_INTEL: u32 = 0x8086;
 pub const PCI_ANY_ID: u32 = !0;
@@ -129,25 +127,20 @@ pub struct net_device {
 #[derive(Debug, Copy, Clone)]
 pub struct napi_struct {
     pub poll_list: list_head,
-    pub state: ::std::os::raw::c_ulong,
-    pub weight: ::std::os::raw::c_int,
-    pub defer_hard_irqs_count: ::std::os::raw::c_int,
-    pub gro_bitmask: ::std::os::raw::c_ulong,
-    pub poll: ::std::option::Option<
-        unsafe extern "C" fn(
-            arg1: *mut napi_struct,
-            arg2: ::std::os::raw::c_int,
-        ) -> ::std::os::raw::c_int,
-    >,
+    pub state: u64,
+    pub weight: i32,
+    pub defer_hard_irqs_count: i32,
+    pub gro_bitmask: u64,
+    pub poll: ::std::option::Option<unsafe extern "C" fn(arg1: *mut napi_struct, arg2: i32) -> i32>,
     pub dev: *mut net_device,
     pub gro_hash: [gro_list; 8usize],
     pub skb: *mut sk_buff,
     pub rx_list: list_head,
-    pub rx_count: ::std::os::raw::c_int,
+    pub rx_count: i32,
     pub timer: hrtimer,
     pub dev_list: list_head,
     pub napi_hash_node: hlist_node,
-    pub napi_id: ::std::os::raw::c_uint,
+    pub napi_id: u32,
 }
 
 /// wrapper around a pointer to a socket buffer,
@@ -166,10 +159,36 @@ pub struct e1000_buffer {
     pub mapped_as_page: u16,
 }
 
+#[derive(Copy, Clone, Debug)]
+struct ArrayDesc<T, const N:usize>{
+    value:[T; N]
+}
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct e1000_tx_ring {
+pub struct e1000_ring {
+    pub adapter: *mut e1000_adapter,
     pub desc: *mut ::std::os::raw::c_void,
+    pub dma: dma_addr_t,
+    pub size: u32,
+    pub count: u32,
+    pub next_to_use: u16,
+    pub next_to_clean: u16,
+    pub head: *mut ::std::os::raw::c_void,
+    pub tail: *mut ::std::os::raw::c_void,
+    pub buffer_info: *mut e1000_buffer,
+    pub name: [i8; 261usize],
+    pub ims_val: u16,
+    pub itr_val: u16,
+    pub itr_register: *mut ::std::os::raw::c_void,
+    pub set_itr: i32,
+    pub rx_skb_top: *mut sk_buff,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_tx_ring<const N:usize>{
+    pub desc: ArrayDesc<e1000_tx_desc, N>, 
     pub dma: dma_addr_t,
     pub size: u32,
     pub count: u32,
@@ -181,10 +200,12 @@ pub struct e1000_tx_ring {
     pub last_tx_tso: bool,
 }
 
+
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct e1000_rx_ring {
-    pub desc: *mut ::std::os::raw::c_void,
+pub struct e1000_rx_ring<const N:usize>{
+    pub desc: ArrayDesc<e1000_rx_desc, N>,
     pub dma: dma_addr_t,
     pub size: u32,
     pub count: u32,
@@ -197,10 +218,46 @@ pub struct e1000_rx_ring {
     pub rdt: u16,
 }
 
+
+trait TxRing {
+    fn nextup(&self) -> u32;
+    fn get_desc<T>(&self, index:u32) -> T; 
+}
+
+fn nextup(next_to_clean:u32, next_to_use:u32, count:u32) -> u32 {
+    let val = if next_to_clean > next_to_use {
+        0
+    } else {
+        count
+    };
+    val + (next_to_clean - next_to_use - 1)
+}
+
+impl <N> TxRing for e1000_tx_ring<N> {
+    fn nextup(&self) -> u32 {
+        nextup(self.next_to_clean, self.next_to_use, self.count)
+    }
+    fn get_desc<e1000_tx_desc>(&self, index:u32) -> &mut e1000_tx_desc {
+        self.desc.value[index]
+    }
+}
+
+impl <N> TxRing for e1000_rx_ring<N> {
+    fn nextup(&self) -> u32 {
+        nextup(self.next_to_clean, self.next_to_use, self.count)
+    }
+
+    fn get_desc<e1000_rx_desc>(&self, index:u32) -> &mut e1000_rx_desc {
+        self.desc.value[index]
+    }
+}
+
+
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct e1000_adapter {
-    pub active_vlans: [::std::os::raw::c_ulong; 64usize],
+pub struct e1000_adapter<const N:usize>{
+    pub active_vlans: [u64; 64usize],
     pub mng_vlan_id: u16,
     pub bd_number: u32,
     pub rx_buffer_len: u32,
@@ -277,7 +334,7 @@ pub struct e1000_adapter {
     pub tso_force: bool,
     pub smart_power_down: bool,
     pub quad_port_a: bool,
-    pub flags: ::std::os::raw::c_ulong,
+    pub flags: u64,
     pub eeprom_wol: u32,
     pub bars: i32,
     pub need_ioport: i32,
@@ -290,15 +347,7 @@ pub struct e1000_adapter {
     pub mutex: mutex,
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_phy_info {
-    pub cable_length: e1000_cable_length,
-    pub extended_10bt_distance: e1000_10bt_ext_dist_enable,
-    pub cable_polarity: e1000_rev_polarity,
-    pub downshift: e1000_downshift,
-    pub polarity_correction: e1000_polarity_reversal,
-    pub mdix_mode: e1000_auto_x_mode,
-    pub local_rx: e1000_1000t_rx_status,
-    pub remote_rx: e1000_1000t_rx_status,
-}
+pub type e1000_state_t = u32;
+pub const e1000_state_t___E1000_TESTING: e1000_state_t = 0;
+pub const e1000_state_t___E1000_RESETTING: e1000_state_t = 1;
+pub const e1000_state_t___E1000_DOWN: e1000_state_t = 2;

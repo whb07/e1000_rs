@@ -1,3 +1,8 @@
+pub type __le32 = u32;
+pub type __le16 = u16;
+
+pub type __le64 = u64;
+
 pub const e1000_mac_type_e1000_undefined: e1000_mac_type = 0;
 pub const e1000_mac_type_e1000_82542_rev2_0: e1000_mac_type = 1;
 pub const e1000_mac_type_e1000_82542_rev2_1: e1000_mac_type = 2;
@@ -14,20 +19,20 @@ pub const e1000_mac_type_e1000_82541_rev_2: e1000_mac_type = 12;
 pub const e1000_mac_type_e1000_82547: e1000_mac_type = 13;
 pub const e1000_mac_type_e1000_82547_rev_2: e1000_mac_type = 14;
 pub const e1000_mac_type_e1000_num_macs: e1000_mac_type = 15;
-pub type e1000_mac_type = ::std::os::raw::c_uint;
+pub type e1000_mac_type = u32;
 
 pub const e1000_phy_type_e1000_phy_m88: e1000_phy_type = 0;
 pub const e1000_phy_type_e1000_phy_igp: e1000_phy_type = 1;
 pub const e1000_phy_type_e1000_phy_8211: e1000_phy_type = 2;
 pub const e1000_phy_type_e1000_phy_8201: e1000_phy_type = 3;
 pub const e1000_phy_type_e1000_phy_undefined: e1000_phy_type = 255;
-pub type e1000_phy_type = ::std::os::raw::c_uint;
+pub type e1000_phy_type = u32;
 
 pub const e1000_media_type_e1000_media_type_copper: e1000_media_type = 0;
 pub const e1000_media_type_e1000_media_type_fiber: e1000_media_type = 1;
 pub const e1000_media_type_e1000_media_type_internal_serdes: e1000_media_type = 2;
 pub const e1000_media_type_e1000_num_media_types: e1000_media_type = 3;
-pub type e1000_media_type = ::std::os::raw::c_uint;
+pub type e1000_media_type = u32;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -41,16 +46,16 @@ pub const e1000_fc_type_E1000_FC_RX_PAUSE: e1000_fc_type = 1;
 pub const e1000_fc_type_E1000_FC_TX_PAUSE: e1000_fc_type = 2;
 pub const e1000_fc_type_E1000_FC_FULL: e1000_fc_type = 3;
 pub const e1000_fc_type_E1000_FC_DEFAULT: e1000_fc_type = 0xFF;
-pub type e1000_fc_type = ::std::os::raw::c_uint;
+pub type e1000_fc_type = u32;
 
 pub const e1000_speed_duplex_type_e1000_10_half: e1000_speed_duplex_type = 0;
 pub const e1000_speed_duplex_type_e1000_10_full: e1000_speed_duplex_type = 1;
 pub const e1000_speed_duplex_type_e1000_100_half: e1000_speed_duplex_type = 2;
 pub const e1000_speed_duplex_type_e1000_100_full: e1000_speed_duplex_type = 3;
-pub type e1000_speed_duplex_type = ::std::os::raw::c_uint;
+pub type e1000_speed_duplex_type = u32;
 
 /// PCI bus speeds
-pub type e1000_bus_speed = ::std::os::raw::c_uint;
+pub type e1000_bus_speed = u32;
 pub const e1000_bus_speed_e1000_bus_speed_unknown: e1000_bus_speed = 0;
 pub const e1000_bus_speed_e1000_bus_speed_33: e1000_bus_speed = 1;
 pub const e1000_bus_speed_e1000_bus_speed_66: e1000_bus_speed = 2;
@@ -60,21 +65,21 @@ pub const e1000_bus_speed_e1000_bus_speed_133: e1000_bus_speed = 5;
 pub const e1000_bus_speed_e1000_bus_speed_reserved: e1000_bus_speed = 6;
 
 /// PCI bus types
-pub type e1000_bus_type = ::std::os::raw::c_uint;
+pub type e1000_bus_type = u32;
 pub const e1000_bus_type_e1000_bus_type_unknown: e1000_bus_type = 0;
 pub const e1000_bus_type_e1000_bus_type_pci: e1000_bus_type = 1;
 pub const e1000_bus_type_e1000_bus_type_pcix: e1000_bus_type = 2;
 pub const e1000_bus_type_e1000_bus_type_reserved: e1000_bus_type = 3;
 
 /// PCI bus widths
-pub type e1000_bus_width = ::std::os::raw::c_uint;
+pub type e1000_bus_width = u32;
 pub const e1000_bus_width_e1000_bus_width_unknown: e1000_bus_width = 0;
 pub const e1000_bus_width_e1000_bus_width_32: e1000_bus_width = 1;
 pub const e1000_bus_width_e1000_bus_width_64: e1000_bus_width = 2;
 pub const e1000_bus_width_e1000_bus_width_reserved: e1000_bus_width = 3;
 
 /// PHY status info structure and supporting enums
-pub type e1000_cable_length = ::std::os::raw::c_uint;
+pub type e1000_cable_length = u32;
 pub const e1000_cable_length_e1000_cable_length_50: e1000_cable_length = 0;
 pub const e1000_cable_length_e1000_cable_length_50_80: e1000_cable_length = 1;
 pub const e1000_cable_length_e1000_cable_length_80_110: e1000_cable_length = 2;
@@ -82,13 +87,13 @@ pub const e1000_cable_length_e1000_cable_length_110_140: e1000_cable_length = 3;
 pub const e1000_cable_length_e1000_cable_length_140: e1000_cable_length = 4;
 pub const e1000_cable_length_e1000_cable_length_undefined: e1000_cable_length = 255;
 
-pub type e1000_gg_cable_length = ::std::os::raw::c_uint;
+pub type e1000_gg_cable_length = u32;
 pub const e1000_gg_cable_length_e1000_gg_cable_length_60: e1000_gg_cable_length = 0;
 pub const e1000_gg_cable_length_e1000_gg_cable_length_60_115: e1000_gg_cable_length = 1;
 pub const e1000_gg_cable_length_e1000_gg_cable_length_115_150: e1000_gg_cable_length = 2;
 pub const e1000_gg_cable_length_e1000_gg_cable_length_150: e1000_gg_cable_length = 4;
 
-pub type e1000_eeprom_type = ::std::os::raw::c_uint;
+pub type e1000_eeprom_type = u32;
 pub const e1000_eeprom_type_e1000_eeprom_uninitialized: e1000_eeprom_type = 0;
 pub const e1000_eeprom_type_e1000_eeprom_spi: e1000_eeprom_type = 1;
 pub const e1000_eeprom_type_e1000_eeprom_microwire: e1000_eeprom_type = 2;
@@ -96,29 +101,29 @@ pub const e1000_eeprom_type_e1000_eeprom_flash: e1000_eeprom_type = 3;
 pub const e1000_eeprom_type_e1000_eeprom_none: e1000_eeprom_type = 4;
 pub const e1000_eeprom_type_e1000_num_eeprom_types: e1000_eeprom_type = 5;
 
-pub type e1000_ms_type = ::std::os::raw::c_uint;
+pub type e1000_ms_type = u32;
 pub const e1000_ms_type_e1000_ms_hw_default: e1000_ms_type = 0;
 pub const e1000_ms_type_e1000_ms_force_master: e1000_ms_type = 1;
 pub const e1000_ms_type_e1000_ms_force_slave: e1000_ms_type = 2;
 pub const e1000_ms_type_e1000_ms_auto: e1000_ms_type = 3;
 
-pub type e1000_ffe_config = ::std::os::raw::c_uint;
+pub type e1000_ffe_config = u32;
 pub const e1000_ffe_config_e1000_ffe_config_enabled: e1000_ffe_config = 0;
 pub const e1000_ffe_config_e1000_ffe_config_active: e1000_ffe_config = 1;
 pub const e1000_ffe_config_e1000_ffe_config_blocked: e1000_ffe_config = 2;
 
-pub type e1000_smart_speed = ::std::os::raw::c_uint;
+pub type e1000_smart_speed = u32;
 pub const e1000_smart_speed_e1000_smart_speed_default: e1000_smart_speed = 0;
 pub const e1000_smart_speed_e1000_smart_speed_on: e1000_smart_speed = 1;
 pub const e1000_smart_speed_e1000_smart_speed_off: e1000_smart_speed = 2;
 
-pub type e1000_dsp_config = ::std::os::raw::c_uint;
+pub type e1000_dsp_config = u32;
 pub const e1000_dsp_config_e1000_dsp_config_disabled: e1000_dsp_config = 0;
 pub const e1000_dsp_config_e1000_dsp_config_enabled: e1000_dsp_config = 1;
 pub const e1000_dsp_config_e1000_dsp_config_activated: e1000_dsp_config = 2;
 pub const e1000_dsp_config_e1000_dsp_config_undefined: e1000_dsp_config = 255;
 
-pub type e1000_10bt_ext_dist_enable = ::std::os::raw::c_uint;
+pub type e1000_10bt_ext_dist_enable = u32;
 pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_normal: e1000_10bt_ext_dist_enable =
     0;
 pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_lower: e1000_10bt_ext_dist_enable =
@@ -126,29 +131,29 @@ pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_lower: e1000_10b
 pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_undefined:
     e1000_10bt_ext_dist_enable = 255;
 
-pub type e1000_rev_polarity = ::std::os::raw::c_uint;
+pub type e1000_rev_polarity = u32;
 pub const e1000_rev_polarity_e1000_rev_polarity_normal: e1000_rev_polarity = 0;
 pub const e1000_rev_polarity_e1000_rev_polarity_reversed: e1000_rev_polarity = 1;
 pub const e1000_rev_polarity_e1000_rev_polarity_undefined: e1000_rev_polarity = 255;
 
-pub type e1000_downshift = ::std::os::raw::c_uint;
+pub type e1000_downshift = u32;
 pub const e1000_downshift_e1000_downshift_normal: e1000_downshift = 0;
 pub const e1000_downshift_e1000_downshift_activated: e1000_downshift = 1;
 pub const e1000_downshift_e1000_downshift_undefined: e1000_downshift = 255;
 
-pub type e1000_polarity_reversal = ::std::os::raw::c_uint;
+pub type e1000_polarity_reversal = u32;
 pub const e1000_polarity_reversal_e1000_polarity_reversal_enabled: e1000_polarity_reversal = 0;
 pub const e1000_polarity_reversal_e1000_polarity_reversal_disabled: e1000_polarity_reversal = 1;
 pub const e1000_polarity_reversal_e1000_polarity_reversal_undefined: e1000_polarity_reversal = 255;
 
-pub type e1000_auto_x_mode = ::std::os::raw::c_uint;
+pub type e1000_auto_x_mode = u32;
 pub const e1000_auto_x_mode_e1000_auto_x_mode_manual_mdi: e1000_auto_x_mode = 0;
 pub const e1000_auto_x_mode_e1000_auto_x_mode_manual_mdix: e1000_auto_x_mode = 1;
 pub const e1000_auto_x_mode_e1000_auto_x_mode_auto1: e1000_auto_x_mode = 2;
 pub const e1000_auto_x_mode_e1000_auto_x_mode_auto2: e1000_auto_x_mode = 3;
 pub const e1000_auto_x_mode_e1000_auto_x_mode_undefined: e1000_auto_x_mode = 255;
 
-pub type e1000_1000t_rx_status = ::std::os::raw::c_uint;
+pub type e1000_1000t_rx_status = u32;
 pub const e1000_1000t_rx_status_e1000_1000t_rx_status_not_ok: e1000_1000t_rx_status = 0;
 pub const e1000_1000t_rx_status_e1000_1000t_rx_status_ok: e1000_1000t_rx_status = 1;
 pub const e1000_1000t_rx_status_e1000_1000t_rx_status_undefined: e1000_1000t_rx_status = 255;
@@ -201,7 +206,7 @@ pub struct e1000_hw {
     pub ffe_config_state: e1000_ffe_config,
     pub asf_firmware_present: u32,
     pub eeprom_semaphore_present: u32,
-    pub io_base: ::std::os::raw::c_ulong,
+    pub io_base: u64,
     pub phy_id: u32,
     pub phy_revision: u32,
     pub phy_addr: u32,
@@ -341,7 +346,116 @@ pub struct e1000_hw_stats {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct e1000_phy_info {
+    pub cable_length: e1000_cable_length,
+    pub extended_10bt_distance: e1000_10bt_ext_dist_enable,
+    pub cable_polarity: e1000_rev_polarity,
+    pub downshift: e1000_downshift,
+    pub polarity_correction: e1000_polarity_reversal,
+    pub mdix_mode: e1000_auto_x_mode,
+    pub local_rx: e1000_1000t_rx_status,
+    pub remote_rx: e1000_1000t_rx_status,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct e1000_phy_stats {
     pub idle_errors: u32,
     pub receive_errors: u32,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct e1000_context_desc {
+    pub lower_setup: e1000_context_desc__bindgen_ty_1,
+    pub upper_setup: e1000_context_desc__bindgen_ty_2,
+    pub cmd_and_length: __le32,
+    pub tcp_seg_setup: e1000_context_desc__bindgen_ty_3,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union e1000_context_desc__bindgen_ty_1 {
+    pub ip_config: __le32,
+    pub ip_fields: e1000_context_desc__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_context_desc__bindgen_ty_1__bindgen_ty_1 {
+    pub ipcss: u8,
+    pub ipcso: u8,
+    pub ipcse: __le16,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union e1000_context_desc__bindgen_ty_2 {
+    pub tcp_config: __le32,
+    pub tcp_fields: e1000_context_desc__bindgen_ty_2__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_context_desc__bindgen_ty_2__bindgen_ty_1 {
+    pub tucss: u8,
+    pub tucso: u8,
+    pub tucse: __le16,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union e1000_context_desc__bindgen_ty_3 {
+    pub data: __le32,
+    pub fields: e1000_context_desc__bindgen_ty_3__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_context_desc__bindgen_ty_3__bindgen_ty_1 {
+    pub status: u8,
+    pub hdr_len: u8,
+    pub mss: __le16,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_rx_desc {
+    pub buffer_addr: __le64,
+    pub length: __le16,
+    pub csum: __le16,
+    pub status: u8,
+    pub errors: u8,
+    pub special: __le16,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct e1000_tx_desc {
+    pub buffer_addr: __le64,
+    pub lower: e1000_tx_desc__bindgen_ty_1,
+    pub upper: e1000_tx_desc__bindgen_ty_2,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union e1000_tx_desc__bindgen_ty_1 {
+    pub data: __le32,
+    pub flags: e1000_tx_desc__bindgen_ty_1__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_tx_desc__bindgen_ty_1__bindgen_ty_1 {
+    pub length: __le16,
+    pub cso: u8,
+    pub cmd: u8,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union e1000_tx_desc__bindgen_ty_2 {
+    pub data: __le32,
+    pub fields: e1000_tx_desc__bindgen_ty_2__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct e1000_tx_desc__bindgen_ty_2__bindgen_ty_1 {
+    pub status: u8,
+    pub css: u8,
+    pub special: __le16,
 }

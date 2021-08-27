@@ -7,13 +7,13 @@ pub type clockid_t = __kernel_clockid_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct atomic64_t {
-    pub counter: ::std::os::raw::c_long,
+    pub counter: i64,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct seqcount {
-    pub sequence: ::std::os::raw::c_uint,
+    pub sequence: u32,
 }
 
 pub type seqcount_t = seqcount;
@@ -102,7 +102,7 @@ where
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct atomic_t {
-    pub counter: ::std::os::raw::c_int,
+    pub counter: i32,
 }
 
 #[repr(C)]
@@ -144,7 +144,7 @@ pub type raw_spinlock_t = raw_spinlock;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct rb_node {
-    pub __rb_parent_color: ::std::os::raw::c_ulong,
+    pub __rb_parent_color: u64,
     pub rb_right: *mut rb_node,
     pub rb_left: *mut rb_node,
 }
@@ -173,7 +173,7 @@ pub struct timerqueue_head {
 #[derive(Debug, Copy, Clone)]
 pub struct hrtimer_clock_base {
     pub cpu_base: *mut hrtimer_cpu_base,
-    pub index: ::std::os::raw::c_uint,
+    pub index: u32,
     pub clockid: clockid_t,
     pub seq: seqcount_t,
     pub running: *mut hrtimer,
@@ -199,21 +199,21 @@ pub struct hrtimer {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct spinlock_t {
-    pub magic: ::std::os::raw::c_ulong,
-    pub lock: ::std::os::raw::c_ulong,
-    pub babble: ::std::os::raw::c_uint,
-    pub module: *const ::std::os::raw::c_char,
-    pub owner: *mut ::std::os::raw::c_char,
-    pub oline: ::std::os::raw::c_int,
+    pub magic: u64,
+    pub lock: u64,
+    pub babble: u32,
+    pub module: *const i8,
+    pub owner: *mut i8,
+    pub oline: i32,
 }
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct hrtimer_cpu_base {
     pub lock: raw_spinlock_t,
-    pub cpu: ::std::os::raw::c_uint,
-    pub active_bases: ::std::os::raw::c_uint,
-    pub clock_was_set_seq: ::std::os::raw::c_uint,
+    pub cpu: u32,
+    pub active_bases: u32,
+    pub clock_was_set_seq: u32,
     pub _bitfield_align_1: [u8; 0],
     pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
     pub expires_next: ktime_t,
@@ -247,7 +247,7 @@ pub struct hlist_head {
 #[derive(Debug, Copy, Clone)]
 pub struct gro_list {
     pub list: list_head,
-    pub count: ::std::os::raw::c_int,
+    pub count: i32,
 }
 
 #[repr(C)]
@@ -266,12 +266,12 @@ pub const hrtimer_base_type_HRTIMER_BASE_REALTIME_SOFT: hrtimer_base_type = 5;
 pub const hrtimer_base_type_HRTIMER_BASE_BOOTTIME_SOFT: hrtimer_base_type = 6;
 pub const hrtimer_base_type_HRTIMER_BASE_TAI_SOFT: hrtimer_base_type = 7;
 pub const hrtimer_base_type_HRTIMER_MAX_CLOCK_BASES: hrtimer_base_type = 8;
-pub type hrtimer_base_type = ::std::os::raw::c_uint;
+pub type hrtimer_base_type = u32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct timer_list {
     pub entry: hlist_node,
-    pub expires: ::std::os::raw::c_ulong,
+    pub expires: u64,
     pub function: ::std::option::Option<unsafe extern "C" fn(arg1: *mut timer_list)>,
     pub flags: u32,
 }
@@ -289,7 +289,7 @@ pub struct delayed_work {
     pub __bindgen_padding_0: [u64; 4usize],
     pub timer: timer_list,
     pub wq: *mut workqueue_struct,
-    pub cpu: ::std::os::raw::c_int,
+    pub cpu: i32,
 }
 
 pub type atomic_long_t = atomic64_t;
