@@ -2221,11 +2221,7 @@ fn bindgen_test_layout_atomic_t() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct atomic64_t {
-    pub counter: ::std::os::raw::c_long,
-}
+
 #[test]
 fn bindgen_test_layout_atomic64_t() {
     assert_eq!(
@@ -2249,7 +2245,6 @@ fn bindgen_test_layout_atomic64_t() {
         )
     );
 }
-pub type atomic_long_t = atomic64_t;
 
 
 #[test]
@@ -2532,12 +2527,6 @@ fn bindgen_test_layout_list_head() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct work_struct {
-    _unused: [u8; 0],
-}
-pub type work_func_t = ::std::option::Option<unsafe extern "C" fn(work: *mut work_struct)>;
 
 #[test]
 fn bindgen_test_layout_hlist_head() {
@@ -2596,24 +2585,7 @@ fn bindgen_test_layout_hlist_node() {
         )
     );
 }
-pub const hrtimer_base_type_HRTIMER_BASE_MONOTONIC: hrtimer_base_type = 0;
-pub const hrtimer_base_type_HRTIMER_BASE_REALTIME: hrtimer_base_type = 1;
-pub const hrtimer_base_type_HRTIMER_BASE_BOOTTIME: hrtimer_base_type = 2;
-pub const hrtimer_base_type_HRTIMER_BASE_TAI: hrtimer_base_type = 3;
-pub const hrtimer_base_type_HRTIMER_BASE_MONOTONIC_SOFT: hrtimer_base_type = 4;
-pub const hrtimer_base_type_HRTIMER_BASE_REALTIME_SOFT: hrtimer_base_type = 5;
-pub const hrtimer_base_type_HRTIMER_BASE_BOOTTIME_SOFT: hrtimer_base_type = 6;
-pub const hrtimer_base_type_HRTIMER_BASE_TAI_SOFT: hrtimer_base_type = 7;
-pub const hrtimer_base_type_HRTIMER_MAX_CLOCK_BASES: hrtimer_base_type = 8;
-pub type hrtimer_base_type = ::std::os::raw::c_uint;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct timer_list {
-    pub entry: hlist_node,
-    pub expires: ::std::os::raw::c_ulong,
-    pub function: ::std::option::Option<unsafe extern "C" fn(arg1: *mut timer_list)>,
-    pub flags: u32,
-}
+
 #[test]
 fn bindgen_test_layout_timer_list() {
     assert_eq!(
@@ -2667,15 +2639,8 @@ fn bindgen_test_layout_timer_list() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct delayed_work {
-    pub work: work_struct,
-    pub __bindgen_padding_0: [u64; 4usize],
-    pub timer: timer_list,
-    pub wq: *mut workqueue_struct,
-    pub cpu: ::std::os::raw::c_int,
-}
+
+
 #[test]
 fn bindgen_test_layout_delayed_work() {
     assert_eq!(
@@ -2803,13 +2768,9 @@ fn bindgen_test_layout_spinlock_t() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct mutex {
-    pub owner: atomic_long_t,
-    pub wait_lock: spinlock_t,
-    pub wait_list: list_head,
-}
+
+
+
 #[test]
 fn bindgen_test_layout_mutex() {
     assert_eq!(
@@ -3480,52 +3441,11 @@ fn bindgen_test_layout_napi_struct() {
         )
     );
 }
-pub const e1000_mac_type_e1000_undefined: e1000_mac_type = 0;
-pub const e1000_mac_type_e1000_82542_rev2_0: e1000_mac_type = 1;
-pub const e1000_mac_type_e1000_82542_rev2_1: e1000_mac_type = 2;
-pub const e1000_mac_type_e1000_82543: e1000_mac_type = 3;
-pub const e1000_mac_type_e1000_82544: e1000_mac_type = 4;
-pub const e1000_mac_type_e1000_82540: e1000_mac_type = 5;
-pub const e1000_mac_type_e1000_82545: e1000_mac_type = 6;
-pub const e1000_mac_type_e1000_82545_rev_3: e1000_mac_type = 7;
-pub const e1000_mac_type_e1000_82546: e1000_mac_type = 8;
-pub const e1000_mac_type_e1000_ce4100: e1000_mac_type = 9;
-pub const e1000_mac_type_e1000_82546_rev_3: e1000_mac_type = 10;
-pub const e1000_mac_type_e1000_82541: e1000_mac_type = 11;
-pub const e1000_mac_type_e1000_82541_rev_2: e1000_mac_type = 12;
-pub const e1000_mac_type_e1000_82547: e1000_mac_type = 13;
-pub const e1000_mac_type_e1000_82547_rev_2: e1000_mac_type = 14;
-pub const e1000_mac_type_e1000_num_macs: e1000_mac_type = 15;
-pub type e1000_mac_type = ::std::os::raw::c_uint;
-pub const e1000_eeprom_type_e1000_eeprom_uninitialized: e1000_eeprom_type = 0;
-pub const e1000_eeprom_type_e1000_eeprom_spi: e1000_eeprom_type = 1;
-pub const e1000_eeprom_type_e1000_eeprom_microwire: e1000_eeprom_type = 2;
-pub const e1000_eeprom_type_e1000_eeprom_flash: e1000_eeprom_type = 3;
-pub const e1000_eeprom_type_e1000_eeprom_none: e1000_eeprom_type = 4;
-pub const e1000_eeprom_type_e1000_num_eeprom_types: e1000_eeprom_type = 5;
-pub type e1000_eeprom_type = ::std::os::raw::c_uint;
-pub const e1000_media_type_e1000_media_type_copper: e1000_media_type = 0;
-pub const e1000_media_type_e1000_media_type_fiber: e1000_media_type = 1;
-pub const e1000_media_type_e1000_media_type_internal_serdes: e1000_media_type = 2;
-pub const e1000_media_type_e1000_num_media_types: e1000_media_type = 3;
-pub type e1000_media_type = ::std::os::raw::c_uint;
-pub const e1000_speed_duplex_type_e1000_10_half: e1000_speed_duplex_type = 0;
-pub const e1000_speed_duplex_type_e1000_10_full: e1000_speed_duplex_type = 1;
-pub const e1000_speed_duplex_type_e1000_100_half: e1000_speed_duplex_type = 2;
-pub const e1000_speed_duplex_type_e1000_100_full: e1000_speed_duplex_type = 3;
-pub type e1000_speed_duplex_type = ::std::os::raw::c_uint;
-pub const e1000_fc_type_E1000_FC_NONE: e1000_fc_type = 0;
-pub const e1000_fc_type_E1000_FC_RX_PAUSE: e1000_fc_type = 1;
-pub const e1000_fc_type_E1000_FC_TX_PAUSE: e1000_fc_type = 2;
-pub const e1000_fc_type_E1000_FC_FULL: e1000_fc_type = 3;
-pub const e1000_fc_type_E1000_FC_DEFAULT: e1000_fc_type = 255;
-pub type e1000_fc_type = ::std::os::raw::c_uint;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_shadow_ram {
-    pub eeprom_word: u16,
-    pub modified: bool,
-}
+
+
+
+
+
 #[test]
 fn bindgen_test_layout_e1000_shadow_ram() {
     assert_eq!(
@@ -3559,36 +3479,8 @@ fn bindgen_test_layout_e1000_shadow_ram() {
         )
     );
 }
-pub const e1000_bus_type_e1000_bus_type_unknown: e1000_bus_type = 0;
-pub const e1000_bus_type_e1000_bus_type_pci: e1000_bus_type = 1;
-pub const e1000_bus_type_e1000_bus_type_pcix: e1000_bus_type = 2;
-pub const e1000_bus_type_e1000_bus_type_reserved: e1000_bus_type = 3;
-pub type e1000_bus_type = ::std::os::raw::c_uint;
-pub const e1000_bus_speed_e1000_bus_speed_unknown: e1000_bus_speed = 0;
-pub const e1000_bus_speed_e1000_bus_speed_33: e1000_bus_speed = 1;
-pub const e1000_bus_speed_e1000_bus_speed_66: e1000_bus_speed = 2;
-pub const e1000_bus_speed_e1000_bus_speed_100: e1000_bus_speed = 3;
-pub const e1000_bus_speed_e1000_bus_speed_120: e1000_bus_speed = 4;
-pub const e1000_bus_speed_e1000_bus_speed_133: e1000_bus_speed = 5;
-pub const e1000_bus_speed_e1000_bus_speed_reserved: e1000_bus_speed = 6;
-pub type e1000_bus_speed = ::std::os::raw::c_uint;
-pub const e1000_bus_width_e1000_bus_width_unknown: e1000_bus_width = 0;
-pub const e1000_bus_width_e1000_bus_width_32: e1000_bus_width = 1;
-pub const e1000_bus_width_e1000_bus_width_64: e1000_bus_width = 2;
-pub const e1000_bus_width_e1000_bus_width_reserved: e1000_bus_width = 3;
-pub type e1000_bus_width = ::std::os::raw::c_uint;
-pub const e1000_cable_length_e1000_cable_length_50: e1000_cable_length = 0;
-pub const e1000_cable_length_e1000_cable_length_50_80: e1000_cable_length = 1;
-pub const e1000_cable_length_e1000_cable_length_80_110: e1000_cable_length = 2;
-pub const e1000_cable_length_e1000_cable_length_110_140: e1000_cable_length = 3;
-pub const e1000_cable_length_e1000_cable_length_140: e1000_cable_length = 4;
-pub const e1000_cable_length_e1000_cable_length_undefined: e1000_cable_length = 255;
-pub type e1000_cable_length = ::std::os::raw::c_uint;
-pub const e1000_gg_cable_length_e1000_gg_cable_length_60: e1000_gg_cable_length = 0;
-pub const e1000_gg_cable_length_e1000_gg_cable_length_60_115: e1000_gg_cable_length = 1;
-pub const e1000_gg_cable_length_e1000_gg_cable_length_115_150: e1000_gg_cable_length = 2;
-pub const e1000_gg_cable_length_e1000_gg_cable_length_150: e1000_gg_cable_length = 4;
-pub type e1000_gg_cable_length = ::std::os::raw::c_uint;
+
+
 pub const e1000_igp_cable_length_e1000_igp_cable_length_10: e1000_igp_cable_length = 10;
 pub const e1000_igp_cable_length_e1000_igp_cable_length_20: e1000_igp_cable_length = 20;
 pub const e1000_igp_cable_length_e1000_igp_cable_length_30: e1000_igp_cable_length = 30;
@@ -3609,59 +3501,11 @@ pub const e1000_igp_cable_length_e1000_igp_cable_length_160: e1000_igp_cable_len
 pub const e1000_igp_cable_length_e1000_igp_cable_length_170: e1000_igp_cable_length = 170;
 pub const e1000_igp_cable_length_e1000_igp_cable_length_180: e1000_igp_cable_length = 180;
 pub type e1000_igp_cable_length = ::std::os::raw::c_uint;
-pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_normal: e1000_10bt_ext_dist_enable =
-    0;
-pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_lower: e1000_10bt_ext_dist_enable =
-    1;
-pub const e1000_10bt_ext_dist_enable_e1000_10bt_ext_dist_enable_undefined:
-    e1000_10bt_ext_dist_enable = 255;
-pub type e1000_10bt_ext_dist_enable = ::std::os::raw::c_uint;
-pub const e1000_rev_polarity_e1000_rev_polarity_normal: e1000_rev_polarity = 0;
-pub const e1000_rev_polarity_e1000_rev_polarity_reversed: e1000_rev_polarity = 1;
-pub const e1000_rev_polarity_e1000_rev_polarity_undefined: e1000_rev_polarity = 255;
-pub type e1000_rev_polarity = ::std::os::raw::c_uint;
-pub const e1000_downshift_e1000_downshift_normal: e1000_downshift = 0;
-pub const e1000_downshift_e1000_downshift_activated: e1000_downshift = 1;
-pub const e1000_downshift_e1000_downshift_undefined: e1000_downshift = 255;
-pub type e1000_downshift = ::std::os::raw::c_uint;
-pub const e1000_smart_speed_e1000_smart_speed_default: e1000_smart_speed = 0;
-pub const e1000_smart_speed_e1000_smart_speed_on: e1000_smart_speed = 1;
-pub const e1000_smart_speed_e1000_smart_speed_off: e1000_smart_speed = 2;
-pub type e1000_smart_speed = ::std::os::raw::c_uint;
-pub const e1000_polarity_reversal_e1000_polarity_reversal_enabled: e1000_polarity_reversal = 0;
-pub const e1000_polarity_reversal_e1000_polarity_reversal_disabled: e1000_polarity_reversal = 1;
-pub const e1000_polarity_reversal_e1000_polarity_reversal_undefined: e1000_polarity_reversal = 255;
-pub type e1000_polarity_reversal = ::std::os::raw::c_uint;
-pub const e1000_auto_x_mode_e1000_auto_x_mode_manual_mdi: e1000_auto_x_mode = 0;
-pub const e1000_auto_x_mode_e1000_auto_x_mode_manual_mdix: e1000_auto_x_mode = 1;
-pub const e1000_auto_x_mode_e1000_auto_x_mode_auto1: e1000_auto_x_mode = 2;
-pub const e1000_auto_x_mode_e1000_auto_x_mode_auto2: e1000_auto_x_mode = 3;
-pub const e1000_auto_x_mode_e1000_auto_x_mode_undefined: e1000_auto_x_mode = 255;
-pub type e1000_auto_x_mode = ::std::os::raw::c_uint;
-pub const e1000_1000t_rx_status_e1000_1000t_rx_status_not_ok: e1000_1000t_rx_status = 0;
-pub const e1000_1000t_rx_status_e1000_1000t_rx_status_ok: e1000_1000t_rx_status = 1;
-pub const e1000_1000t_rx_status_e1000_1000t_rx_status_undefined: e1000_1000t_rx_status = 255;
-pub type e1000_1000t_rx_status = ::std::os::raw::c_uint;
-pub const e1000_phy_type_e1000_phy_m88: e1000_phy_type = 0;
-pub const e1000_phy_type_e1000_phy_igp: e1000_phy_type = 1;
-pub const e1000_phy_type_e1000_phy_8211: e1000_phy_type = 2;
-pub const e1000_phy_type_e1000_phy_8201: e1000_phy_type = 3;
-pub const e1000_phy_type_e1000_phy_undefined: e1000_phy_type = 255;
-pub type e1000_phy_type = ::std::os::raw::c_uint;
-pub const e1000_ms_type_e1000_ms_hw_default: e1000_ms_type = 0;
-pub const e1000_ms_type_e1000_ms_force_master: e1000_ms_type = 1;
-pub const e1000_ms_type_e1000_ms_force_slave: e1000_ms_type = 2;
-pub const e1000_ms_type_e1000_ms_auto: e1000_ms_type = 3;
-pub type e1000_ms_type = ::std::os::raw::c_uint;
-pub const e1000_ffe_config_e1000_ffe_config_enabled: e1000_ffe_config = 0;
-pub const e1000_ffe_config_e1000_ffe_config_active: e1000_ffe_config = 1;
-pub const e1000_ffe_config_e1000_ffe_config_blocked: e1000_ffe_config = 2;
-pub type e1000_ffe_config = ::std::os::raw::c_uint;
-pub const e1000_dsp_config_e1000_dsp_config_disabled: e1000_dsp_config = 0;
-pub const e1000_dsp_config_e1000_dsp_config_enabled: e1000_dsp_config = 1;
-pub const e1000_dsp_config_e1000_dsp_config_activated: e1000_dsp_config = 2;
-pub const e1000_dsp_config_e1000_dsp_config_undefined: e1000_dsp_config = 255;
-pub type e1000_dsp_config = ::std::os::raw::c_uint;
+
+
+
+
+
 
 #[test]
 fn bindgen_test_layout_e1000_phy_info() {
@@ -3760,12 +3604,7 @@ fn bindgen_test_layout_e1000_phy_info() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_phy_stats {
-    pub idle_errors: u32,
-    pub receive_errors: u32,
-}
+
 #[test]
 fn bindgen_test_layout_e1000_phy_stats() {
     assert_eq!(
@@ -3799,16 +3638,7 @@ fn bindgen_test_layout_e1000_phy_stats() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_eeprom_info {
-    pub type_: e1000_eeprom_type,
-    pub word_size: u16,
-    pub opcode_bits: u16,
-    pub address_bits: u16,
-    pub delay_usec: u16,
-    pub page_size: u16,
-}
+
 #[test]
 fn bindgen_test_layout_e1000_eeprom_info() {
     assert_eq!(
@@ -4069,18 +3899,7 @@ fn bindgen_test_layout_e1000_host_mng_command_info() {
         )
     );
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_host_mng_dhcp_cookie {
-    pub signature: u32,
-    pub status: u8,
-    pub reserved0: u8,
-    pub vlan_id: u16,
-    pub reserved1: u32,
-    pub reserved2: u16,
-    pub reserved3: u8,
-    pub checksum: u8,
-}
+
 #[test]
 fn bindgen_test_layout_e1000_host_mng_dhcp_cookie() {
     assert_eq!(
