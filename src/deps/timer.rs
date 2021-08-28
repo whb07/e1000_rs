@@ -4,6 +4,7 @@ pub type ktime_t = i64;
 pub type __kernel_clockid_t = i32;
 pub type clockid_t = __kernel_clockid_t;
 
+//noinspection RsStructNaming
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct atomic64_t {
@@ -178,7 +179,7 @@ pub struct hrtimer_clock_base {
     pub seq: seqcount_t,
     pub running: *mut hrtimer,
     pub active: timerqueue_head,
-    pub get_time: ::std::option::Option<unsafe extern "C" fn() -> ktime_t>,
+    // pub get_time: Option<unsafe extern "C" fn() -> ktime_t>,
     pub offset: ktime_t,
 }
 
@@ -187,8 +188,8 @@ pub struct hrtimer_clock_base {
 pub struct hrtimer {
     pub node: timerqueue_node,
     pub _softexpires: ktime_t,
-    pub function:
-        ::std::option::Option<unsafe extern "C" fn(arg1: *mut hrtimer) -> hrtimer_restart>,
+    // pub function:
+    // Option<unsafe extern "C" fn(arg1: *mut hrtimer) -> hrtimer_restart>,
     pub base: *mut hrtimer_clock_base,
     pub state: u8,
     pub is_rel: u8,
@@ -255,24 +256,24 @@ pub struct gro_list {
 pub struct work_struct {
     _unused: [u8; 0],
 }
-pub type work_func_t = ::std::option::Option<unsafe extern "C" fn(work: *mut work_struct)>;
+pub type work_func_t = Option<unsafe extern "C" fn(work: *mut work_struct)>;
 
-pub const hrtimer_base_type_HRTIMER_BASE_MONOTONIC: hrtimer_base_type = 0;
-pub const hrtimer_base_type_HRTIMER_BASE_REALTIME: hrtimer_base_type = 1;
-pub const hrtimer_base_type_HRTIMER_BASE_BOOTTIME: hrtimer_base_type = 2;
-pub const hrtimer_base_type_HRTIMER_BASE_TAI: hrtimer_base_type = 3;
-pub const hrtimer_base_type_HRTIMER_BASE_MONOTONIC_SOFT: hrtimer_base_type = 4;
-pub const hrtimer_base_type_HRTIMER_BASE_REALTIME_SOFT: hrtimer_base_type = 5;
-pub const hrtimer_base_type_HRTIMER_BASE_BOOTTIME_SOFT: hrtimer_base_type = 6;
-pub const hrtimer_base_type_HRTIMER_BASE_TAI_SOFT: hrtimer_base_type = 7;
-pub const hrtimer_base_type_HRTIMER_MAX_CLOCK_BASES: hrtimer_base_type = 8;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_MONOTONIC: hrtimer_base_type = 0;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_REALTIME: hrtimer_base_type = 1;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_BOOTTIME: hrtimer_base_type = 2;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_TAI: hrtimer_base_type = 3;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_MONOTONIC_SOFT: hrtimer_base_type = 4;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_REALTIME_SOFT: hrtimer_base_type = 5;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_BOOTTIME_SOFT: hrtimer_base_type = 6;
+pub const HRTIMER_BASE_TYPE_HRTIMER_BASE_TAI_SOFT: hrtimer_base_type = 7;
+pub const HRTIMER_BASE_TYPE_HRTIMER_MAX_CLOCK_BASES: hrtimer_base_type = 8;
 pub type hrtimer_base_type = u32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct timer_list {
     pub entry: hlist_node,
     pub expires: u64,
-    pub function: ::std::option::Option<unsafe extern "C" fn(arg1: *mut timer_list)>,
+    pub function: Option<unsafe extern "C" fn(arg1: *mut timer_list)>,
     pub flags: u32,
 }
 

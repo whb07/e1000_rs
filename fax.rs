@@ -112,18 +112,8 @@ pub const FSEC_PER_SEC: u64 = 1000000000000000;
 pub const GRO_HASH_BUCKETS: u32 = 8;
 
 
-pub const E1000_HOST_IF_MAX_SIZE: u32 = 2048;
-pub const E1000_SUCCESS: u32 = 0;
-pub const E1000_ERR_EEPROM: u32 = 1;
-pub const E1000_ERR_PHY: u32 = 2;
-pub const E1000_ERR_CONFIG: u32 = 3;
-pub const E1000_ERR_PARAM: u32 = 4;
-pub const E1000_ERR_MAC_TYPE: u32 = 5;
-pub const E1000_ERR_PHY_TYPE: u32 = 6;
-pub const E1000_ERR_RESET: u32 = 9;
-pub const E1000_ERR_MASTER_REQUESTS_PENDING: u32 = 10;
-pub const E1000_ERR_HOST_INTERFACE_COMMAND: u32 = 11;
-pub const E1000_BLK_PHY_RESET: u32 = 12;
+
+
 pub const E1000_MNG_DHCP_TX_PAYLOAD_CMD: u32 = 64;
 pub const E1000_HI_MAX_MNG_DATA_LENGTH: u32 = 1784;
 pub const E1000_MNG_DHCP_COMMAND_TIMEOUT: u32 = 10;
@@ -137,126 +127,15 @@ pub const E1000_MNG_DHCP_COOKIE_STATUS_VLAN_SUPPORT: u32 = 2;
 pub const E1000_VFTA_ENTRY_SHIFT: u32 = 5;
 pub const E1000_VFTA_ENTRY_MASK: u32 = 127;
 pub const E1000_VFTA_ENTRY_BIT_SHIFT_MASK: u32 = 31;
-pub const E1000_DEV_ID_82542: u32 = 4096;
-pub const E1000_DEV_ID_82543GC_FIBER: u32 = 4097;
-pub const E1000_DEV_ID_82543GC_COPPER: u32 = 4100;
-pub const E1000_DEV_ID_82544EI_COPPER: u32 = 4104;
-pub const E1000_DEV_ID_82544EI_FIBER: u32 = 4105;
-pub const E1000_DEV_ID_82544GC_COPPER: u32 = 4108;
-pub const E1000_DEV_ID_82544GC_LOM: u32 = 4109;
-pub const E1000_DEV_ID_82540EM: u32 = 4110;
-pub const E1000_DEV_ID_82540EM_LOM: u32 = 4117;
-pub const E1000_DEV_ID_82540EP_LOM: u32 = 4118;
-pub const E1000_DEV_ID_82540EP: u32 = 4119;
-pub const E1000_DEV_ID_82540EP_LP: u32 = 4126;
-pub const E1000_DEV_ID_82545EM_COPPER: u32 = 4111;
-pub const E1000_DEV_ID_82545EM_FIBER: u32 = 4113;
-pub const E1000_DEV_ID_82545GM_COPPER: u32 = 4134;
-pub const E1000_DEV_ID_82545GM_FIBER: u32 = 4135;
-pub const E1000_DEV_ID_82545GM_SERDES: u32 = 4136;
-pub const E1000_DEV_ID_82546EB_COPPER: u32 = 4112;
-pub const E1000_DEV_ID_82546EB_FIBER: u32 = 4114;
-pub const E1000_DEV_ID_82546EB_QUAD_COPPER: u32 = 4125;
-pub const E1000_DEV_ID_82541EI: u32 = 4115;
-pub const E1000_DEV_ID_82541EI_MOBILE: u32 = 4120;
-pub const E1000_DEV_ID_82541ER_LOM: u32 = 4116;
-pub const E1000_DEV_ID_82541ER: u32 = 4216;
-pub const E1000_DEV_ID_82547GI: u32 = 4213;
-pub const E1000_DEV_ID_82541GI: u32 = 4214;
-pub const E1000_DEV_ID_82541GI_MOBILE: u32 = 4215;
-pub const E1000_DEV_ID_82541GI_LF: u32 = 4220;
-pub const E1000_DEV_ID_82546GB_COPPER: u32 = 4217;
-pub const E1000_DEV_ID_82546GB_FIBER: u32 = 4218;
-pub const E1000_DEV_ID_82546GB_SERDES: u32 = 4219;
-pub const E1000_DEV_ID_82546GB_PCIE: u32 = 4234;
-pub const E1000_DEV_ID_82546GB_QUAD_COPPER: u32 = 4249;
-pub const E1000_DEV_ID_82547EI: u32 = 4121;
-pub const E1000_DEV_ID_82547EI_MOBILE: u32 = 4122;
-pub const E1000_DEV_ID_82546GB_QUAD_COPPER_KSP3: u32 = 4277;
-pub const E1000_DEV_ID_INTEL_CE4100_GBE: u32 = 11886;
-pub const NODE_ADDRESS_SIZE: u32 = 6;
-pub const MAC_DECODE_SIZE: u32 = 131072;
-pub const E1000_82542_2_0_REV_ID: u32 = 2;
-pub const E1000_82542_2_1_REV_ID: u32 = 3;
-pub const E1000_REVISION_0: u32 = 0;
-pub const E1000_REVISION_1: u32 = 1;
-pub const E1000_REVISION_2: u32 = 2;
-pub const E1000_REVISION_3: u32 = 3;
-pub const SPEED_10: u32 = 10;
-pub const SPEED_100: u32 = 100;
-pub const SPEED_1000: u32 = 1000;
-pub const HALF_DUPLEX: u32 = 1;
-pub const FULL_DUPLEX: u32 = 2;
-pub const ENET_HEADER_SIZE: u32 = 14;
-pub const MINIMUM_ETHERNET_FRAME_SIZE: u32 = 64;
-pub const ETHERNET_FCS_SIZE: u32 = 4;
-pub const MINIMUM_ETHERNET_PACKET_SIZE: u32 = 60;
-pub const CRC_LENGTH: u32 = 4;
-pub const MAX_JUMBO_FRAME_SIZE: u32 = 16128;
-pub const VLAN_TAG_SIZE: u32 = 4;
-pub const ETHERNET_IEEE_VLAN_TYPE: u32 = 33024;
-pub const ETHERNET_IP_TYPE: u32 = 2048;
-pub const ETHERNET_ARP_TYPE: u32 = 2054;
-pub const IP_PROTOCOL_TCP: u32 = 6;
-pub const IP_PROTOCOL_UDP: u32 = 17;
-pub const E1000_RAR_ENTRIES: u32 = 15;
-pub const MIN_NUMBER_OF_DESCRIPTORS: u32 = 8;
-pub const MAX_NUMBER_OF_DESCRIPTORS: u32 = 65528;
-pub const MAX_PS_BUFFERS: u32 = 4;
-pub const E1000_RXD_STAT_DD: u32 = 1;
-pub const E1000_RXD_STAT_EOP: u32 = 2;
-pub const E1000_RXD_STAT_IXSM: u32 = 4;
-pub const E1000_RXD_STAT_VP: u32 = 8;
-pub const E1000_RXD_STAT_UDPCS: u32 = 16;
-pub const E1000_RXD_STAT_TCPCS: u32 = 32;
-pub const E1000_RXD_STAT_IPCS: u32 = 64;
-pub const E1000_RXD_STAT_PIF: u32 = 128;
-pub const E1000_RXD_STAT_IPIDV: u32 = 512;
-pub const E1000_RXD_STAT_UDPV: u32 = 1024;
-pub const E1000_RXD_STAT_ACK: u32 = 32768;
-pub const E1000_RXD_ERR_CE: u32 = 1;
-pub const E1000_RXD_ERR_SE: u32 = 2;
-pub const E1000_RXD_ERR_SEQ: u32 = 4;
-pub const E1000_RXD_ERR_CXE: u32 = 16;
-pub const E1000_RXD_ERR_TCPE: u32 = 32;
-pub const E1000_RXD_ERR_IPE: u32 = 64;
-pub const E1000_RXD_ERR_RXE: u32 = 128;
-pub const E1000_RXD_SPC_VLAN_MASK: u32 = 4095;
-pub const E1000_RXD_SPC_PRI_MASK: u32 = 57344;
-pub const E1000_RXD_SPC_PRI_SHIFT: u32 = 13;
-pub const E1000_RXD_SPC_CFI_MASK: u32 = 4096;
-pub const E1000_RXD_SPC_CFI_SHIFT: u32 = 12;
-pub const E1000_RXDEXT_STATERR_CE: u32 = 16777216;
-pub const E1000_RXDEXT_STATERR_SE: u32 = 33554432;
-pub const E1000_RXDEXT_STATERR_SEQ: u32 = 67108864;
-pub const E1000_RXDEXT_STATERR_CXE: u32 = 268435456;
-pub const E1000_RXDEXT_STATERR_TCPE: u32 = 536870912;
-pub const E1000_RXDEXT_STATERR_IPE: u32 = 1073741824;
-pub const E1000_RXDEXT_STATERR_RXE: u32 = 2147483648;
-pub const E1000_RXDPS_HDRSTAT_HDRSP: u32 = 32768;
-pub const E1000_RXDPS_HDRSTAT_HDRLEN_MASK: u32 = 1023;
-pub const E1000_RXD_ERR_FRAME_ERR_MASK: u32 = 151;
-pub const E1000_RXDEXT_ERR_FRAME_ERR_MASK: u32 = 2533359616;
-pub const E1000_TXD_DTYP_D: u32 = 1048576;
-pub const E1000_TXD_DTYP_C: u32 = 0;
-pub const E1000_TXD_POPTS_IXSM: u32 = 1;
-pub const E1000_TXD_POPTS_TXSM: u32 = 2;
-pub const E1000_TXD_CMD_EOP: u32 = 16777216;
-pub const E1000_TXD_CMD_IFCS: u32 = 33554432;
-pub const E1000_TXD_CMD_IC: u32 = 67108864;
-pub const E1000_TXD_CMD_RS: u32 = 134217728;
-pub const E1000_TXD_CMD_RPS: u32 = 268435456;
-pub const E1000_TXD_CMD_DEXT: u32 = 536870912;
-pub const E1000_TXD_CMD_VLE: u32 = 1073741824;
-pub const E1000_TXD_CMD_IDE: u32 = 2147483648;
-pub const E1000_TXD_STAT_DD: u32 = 1;
-pub const E1000_TXD_STAT_EC: u32 = 2;
-pub const E1000_TXD_STAT_LC: u32 = 4;
-pub const E1000_TXD_STAT_TU: u32 = 8;
-pub const E1000_TXD_CMD_TCP: u32 = 16777216;
-pub const E1000_TXD_CMD_IP: u32 = 33554432;
-pub const E1000_TXD_CMD_TSE: u32 = 67108864;
-pub const E1000_TXD_STAT_TC: u32 = 4;
+
+
+
+
+
+
+
+
+
 pub const E1000_NUM_UNICAST: u32 = 16;
 pub const E1000_MC_TBL_SIZE: u32 = 128;
 pub const E1000_VLAN_FILTER_TBL_SIZE: u32 = 128;
@@ -1287,7 +1166,6 @@ pub const E1000_GCR_RXDSCR_NO_SNOOP: u32 = 4;
 pub const E1000_GCR_TXD_NO_SNOOP: u32 = 8;
 pub const E1000_GCR_TXDSCW_NO_SNOOP: u32 = 16;
 pub const E1000_GCR_TXDSCR_NO_SNOOP: u32 = 32;
-pub const PCI_EX_NO_SNOOP_ALL: u32 = 63;
 pub const PCI_EX_82566_SNOOP_ALL: u32 = 63;
 pub const E1000_GCR_L1_ACT_WITHOUT_L0S_RX: u32 = 134217728;
 pub const E1000_FACTPS_FUNC0_POWER_STATE_MASK: u32 = 3;
@@ -1962,7 +1840,7 @@ pub type __suseconds64_t = i64;
 pub type __daddr_t = i32;
 pub type __key_t = i32;
 
-pub type __timer_t = *mut ::std::os::raw::c_void;
+pub type __timer_t = *mut c_void;
 pub type __blksize_t = i64;
 pub type __blkcnt_t = i64;
 pub type __blkcnt64_t = i64;
@@ -2014,9 +1892,9 @@ pub struct max_align_t {
 #[derive(Debug, Copy, Clone)]
 pub struct rb_augment_callbacks {
     pub propagate:
-        ::std::option::Option<unsafe extern "C" fn(node: *mut rb_node, stop: *mut rb_node)>,
-    pub copy: ::std::option::Option<unsafe extern "C" fn(old: *mut rb_node, new_: *mut rb_node)>,
-    pub rotate: ::std::option::Option<unsafe extern "C" fn(old: *mut rb_node, new_: *mut rb_node)>,
+        Option<unsafe extern "C" fn(node: *mut rb_node, stop: *mut rb_node)>,
+    pub copy: Option<unsafe extern "C" fn(old: *mut rb_node, new_: *mut rb_node)>,
+    pub rotate: Option<unsafe extern "C" fn(old: *mut rb_node, new_: *mut rb_node)>,
 }
 
 extern "C" {
@@ -2199,10 +2077,6 @@ pub const e1000_igp_cable_length_e1000_igp_cable_length_180: e1000_igp_cable_len
 pub type e1000_igp_cable_length = u32;
 
 
-pub const e1000_align_type_e1000_byte_align: e1000_align_type = 0;
-pub const e1000_align_type_e1000_word_align: e1000_align_type = 1;
-pub const e1000_align_type_e1000_dword_align: e1000_align_type = 2;
-pub type e1000_align_type = u32;
 extern "C" {
     pub fn e1000_reset_hw(hw: *mut e1000_hw) -> i32;
 }
@@ -2257,22 +2131,8 @@ extern "C" {
 extern "C" {
     pub fn e1000_enable_mng_pass_thru(hw: *mut e1000_hw) -> u32;
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_host_mng_command_header {
-    pub command_id: u8,
-    pub checksum: u8,
-    pub reserved1: u16,
-    pub reserved2: u16,
-    pub command_length: u16,
-}
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_host_mng_command_info {
-    pub command_header: e1000_host_mng_command_header,
-    pub command_data: [u8; 1784usize],
-}
+
 
 extern "C" {
     pub fn e1000_check_mng_mode(hw: *mut e1000_hw) -> bool;

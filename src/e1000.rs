@@ -1,17 +1,19 @@
-use core::num::dec2flt::number::Number;
+use crate::lib::*;
 
 use crate::deps::timer::{
     atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t,
     work_struct,
 };
-use crate::e1000_hw::{e1000_1000t_rx_status, e1000_10bt_ext_dist_enable, e1000_auto_x_mode, e1000_cable_length, e1000_context_desc, e1000_downshift, e1000_hw, e1000_hw_stats, e1000_phy_stats, e1000_polarity_reversal, e1000_rev_polarity, e1000_rx_desc, e1000_tx_desc};
+use crate::e1000_hw::{c_void, E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
+
+use crate::lib::fmt::Formatter;
 
 pub const PCI_VENDOR_ID_INTEL: u32 = 0x8086;
 pub const PCI_ANY_ID: u32 = !0;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Default)]
-pub struct pci_device_id {
+pub struct PciDeviceId {
     pub vendor: u32,
     pub device: u32,
     pub subvendor: u32,
@@ -21,8 +23,8 @@ pub struct pci_device_id {
     pub driver_data: u64,
 }
 
-fn INTEL_E1000_ETHERNET_DEVICE(device_id: u32) -> pci_device_id {
-    pci_device_id {
+fn intel_e1000_ethernet_device(device_id: u32) -> PciDeviceId {
+    PciDeviceId {
         vendor: PCI_VENDOR_ID_INTEL,
         device: device_id,
         subvendor: PCI_ANY_ID,
@@ -97,44 +99,44 @@ pub const E1000_EEPROM_82544_APM: u32 = 0x0004;
 pub const E1000_EEPROM_APME: u32 = 0x0400;
 pub const E1000_MNG_VLAN_NONE: i32 = -1;
 
-pub type dma_addr_t = u32;
+pub type DmaAddrT = u32;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct sk_buff {
+pub struct SkBuff {
     pub _address: u8,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct page {
+pub struct Page {
     pub _address: u8,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct pci_dev {
+pub struct PciDev {
     pub _address: u8,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct net_device {
+pub struct NetDevice {
     pub _address: u8,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct napi_struct {
+pub struct NapiStruct {
     pub poll_list: list_head,
     pub state: u64,
     pub weight: i32,
     pub defer_hard_irqs_count: i32,
     pub gro_bitmask: u64,
-    pub poll: ::std::option::Option<unsafe extern "C" fn(arg1: *mut napi_struct, arg2: i32) -> i32>,
-    pub dev: *mut net_device,
+    pub poll: Option<unsafe extern "C" fn(arg1: *mut NapiStruct, arg2: i32) -> i32>,
+    pub dev: *mut NetDevice,
     pub gro_hash: [gro_list; 8usize],
-    pub skb: *mut sk_buff,
+    pub skb: *mut SkBuff,
     pub rx_list: list_head,
     pub rx_count: i32,
     pub timer: hrtimer,
@@ -147,10 +149,10 @@ pub struct napi_struct {
 /// so a DMA handle can be stored along with the buffer
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct e1000_buffer {
-    pub skb: *mut sk_buff,
-    pub dma: dma_addr_t,
-    pub page: *mut page,
+pub struct E1000Buffer {
+    pub skb: *mut SkBuff,
+    pub dma: DmaAddrT,
+    pub page: *mut Page,
     pub time_stamp: u64,
     pub length: u16,
     pub next_to_watch: u16,
@@ -160,71 +162,68 @@ pub struct e1000_buffer {
 }
 
 #[derive(Copy, Clone, Debug)]
-struct ArrayDesc<T, const N:usize>{
-    value:[T; N]
+struct ArrayDesc<T, const N: usize> {
+    value: [T; N],
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_ring {
-    pub adapter: *mut e1000_adapter,
-    pub desc: *mut ::std::os::raw::c_void,
-    pub dma: dma_addr_t,
+#[derive(Debug)]
+pub struct E1000Ring<'a> {
+    pub adapter: &'a mut E1000Adapter<'a>,
+    pub desc: *mut c_void,
+    pub dma: DmaAddrT,
     pub size: u32,
     pub count: u32,
     pub next_to_use: u16,
     pub next_to_clean: u16,
-    pub head: *mut ::std::os::raw::c_void,
-    pub tail: *mut ::std::os::raw::c_void,
-    pub buffer_info: *mut e1000_buffer,
+    pub head: *mut c_void,
+    pub tail: *mut c_void,
+    pub buffer_info: *mut E1000Buffer,
     pub name: [i8; 261usize],
     pub ims_val: u16,
     pub itr_val: u16,
-    pub itr_register: *mut ::std::os::raw::c_void,
+    pub itr_register: *mut c_void,
     pub set_itr: i32,
-    pub rx_skb_top: *mut sk_buff,
+    pub rx_skb_top: *mut SkBuff,
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_tx_ring<const N:usize>{
-    pub desc: ArrayDesc<e1000_tx_desc, N>, 
-    pub dma: dma_addr_t,
+#[derive(Debug, Clone)]
+pub struct E1000TxRing {
+    pub desc: Box<Vec<E1000TxDesc>>,
+    pub dma: DmaAddrT,
     pub size: u32,
     pub count: u32,
     pub next_to_use: u32,
     pub next_to_clean: u32,
-    pub buffer_info: *mut e1000_buffer,
+    pub buffer_info: *mut E1000Buffer,
     pub tdh: u16,
     pub tdt: u16,
     pub last_tx_tso: bool,
 }
 
-
-
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_rx_ring<const N:usize>{
-    pub desc: ArrayDesc<e1000_rx_desc, N>,
-    pub dma: dma_addr_t,
+#[derive(Debug, Clone)]
+pub struct E1000RxRing {
+    pub desc: Box<Vec<E1000TxDesc>>,
+    pub dma: DmaAddrT,
     pub size: u32,
     pub count: u32,
     pub next_to_use: u32,
     pub next_to_clean: u32,
-    pub buffer_info: *mut e1000_buffer,
-    pub rx_skb_top: *mut sk_buff,
+    pub buffer_info: *mut E1000Buffer,
+    pub rx_skb_top: *mut SkBuff,
     pub cpu: i32,
     pub rdh: u16,
     pub rdt: u16,
 }
 
-
 trait TxRing {
     fn nextup(&self) -> u32;
-    fn get_desc<T>(&self, index:u32) -> T; 
+    fn get_desc<T>(&self, index: u32) -> T;
 }
 
-fn nextup(next_to_clean:u32, next_to_use:u32, count:u32) -> u32 {
+fn nextup(next_to_clean: u32, next_to_use: u32, count: u32) -> u32 {
     let val = if next_to_clean > next_to_use {
         0
     } else {
@@ -233,30 +232,52 @@ fn nextup(next_to_clean:u32, next_to_use:u32, count:u32) -> u32 {
     val + (next_to_clean - next_to_use - 1)
 }
 
-impl <N> TxRing for e1000_tx_ring<N> {
-    fn nextup(&self) -> u32 {
-        nextup(self.next_to_clean, self.next_to_use, self.count)
-    }
-    fn get_desc<e1000_tx_desc>(&self, index:u32) -> &mut e1000_tx_desc {
-        self.desc.value[index]
+// impl<N> TxRing for E1000TxRing<N> {
+//     fn nextup(&self) -> u32 {
+//         nextup(self.next_to_clean, self.next_to_use, self.count)
+//     }
+//     fn get_desc<E1000TxDesc>(&self, index: u32) -> &mut E1000TxDesc {
+//         self.desc.value[index]
+//     }
+// }
+
+// impl<N> TxRing for E1000RxRing<N> {
+//     fn nextup(&self) -> u32 {
+//         nextup(self.next_to_clean, self.next_to_use, self.count)
+//     }
+//
+//     fn get_desc<E1000RxDesc>(&self, index: u32) -> &mut E1000RxDesc {
+//         self.desc.value[index]
+//     }
+// }
+
+// static bool e1000_clean_jumbo_rx_irq(struct e1000_adapter *adapter,
+// struct e1000_rx_ring *rx_ring,
+// int *work_done, int work_to_do)
+
+pub trait PolFnTr: Fn(&E1000Adapter, &E1000RxRing, i32, i32) -> bool {}
+impl<F> PolFnTr for F where F: Fn(&E1000Adapter, &E1000RxRing, i32, i32) -> bool {}
+pub type CleanRxFn = dyn PolFnTr<Output = bool>;
+
+impl fmt::Debug for CleanRxFn {
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
+        fmt.debug_struct("foo").finish()
     }
 }
 
-impl <N> TxRing for e1000_rx_ring<N> {
-    fn nextup(&self) -> u32 {
-        nextup(self.next_to_clean, self.next_to_use, self.count)
-    }
+pub trait AllocFnTr: Fn(&E1000Adapter, &E1000RxRing, i32) {}
+impl<F> AllocFnTr for F where F: Fn(&E1000Adapter, &E1000RxRing, i32) {}
+pub type AllocFn = dyn AllocFnTr<Output = ()>;
 
-    fn get_desc<e1000_rx_desc>(&self, index:u32) -> &mut e1000_rx_desc {
-        self.desc.value[index]
+impl fmt::Debug for AllocFn {
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
+        fmt.debug_struct("foo").finish()
     }
 }
-
-
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct e1000_adapter<const N:usize>{
+#[derive(Debug)]
+pub struct E1000Adapter<'a> {
     pub active_vlans: [u64; 64usize],
     pub mng_vlan_id: u16,
     pub bd_number: u32,
@@ -276,7 +297,7 @@ pub struct e1000_adapter<const N:usize>{
     pub tx_itr: u16,
     pub rx_itr: u16,
     pub fc_autoneg: u8,
-    pub tx_ring: *mut e1000_tx_ring,
+    pub tx_ring: *mut E1000TxRing,
     pub restart_queue: u32,
     pub txd_cmd: u32,
     pub tx_int_delay: u32,
@@ -294,23 +315,10 @@ pub struct e1000_adapter<const N:usize>{
     pub pcix_82544: bool,
     pub detect_tx_hung: bool,
     pub dump_buffers: bool,
-    pub clean_rx: ::std::option::Option<
-        unsafe extern "C" fn(
-            adapter: *mut e1000_adapter,
-            rx_ring: *mut e1000_rx_ring,
-            work_done: *mut i32,
-            work_to_do: i32,
-        ) -> bool,
-    >,
-    pub alloc_rx_buf: ::std::option::Option<
-        unsafe extern "C" fn(
-            adapter: *mut e1000_adapter,
-            rx_ring: *mut e1000_rx_ring,
-            cleaned_count: i32,
-        ),
-    >,
-    pub rx_ring: *mut e1000_rx_ring,
-    pub napi: napi_struct,
+    pub clean_rx: &'a CleanRxFn,
+    pub alloc_rx_buf: &'a AllocFn,
+    pub rx_ring: *mut E1000RxRing,
+    pub napi: NapiStruct,
     pub num_tx_queues: i32,
     pub num_rx_queues: i32,
     pub hw_csum_err: u64,
@@ -321,15 +329,15 @@ pub struct e1000_adapter<const N:usize>{
     pub rx_csum: bool,
     pub gorcl: u32,
     pub gorcl_old: u64,
-    pub netdev: *mut net_device,
-    pub pdev: *mut pci_dev,
-    pub hw: e1000_hw,
-    pub stats: e1000_hw_stats,
-    pub phy_info: e1000_phy_info,
-    pub phy_stats: e1000_phy_stats,
+    pub netdev: NetDevice,
+    pub pdev: *mut PciDev,
+    pub hw: &'a E1000Hw<'a>,
+    pub stats: E1000HwStats,
+    pub phy_info: E1000PhyInfo,
+    pub phy_stats: E1000PhyStats,
     pub test_icr: u32,
-    pub test_tx_ring: e1000_tx_ring,
-    pub test_rx_ring: e1000_rx_ring,
+    pub test_tx_ring: E1000TxRing,
+    pub test_rx_ring: E1000RxRing,
     pub msg_enable: i32,
     pub tso_force: bool,
     pub smart_power_down: bool,
@@ -347,7 +355,11 @@ pub struct e1000_adapter<const N:usize>{
     pub mutex: mutex,
 }
 
-pub type e1000_state_t = u32;
-pub const e1000_state_t___E1000_TESTING: e1000_state_t = 0;
-pub const e1000_state_t___E1000_RESETTING: e1000_state_t = 1;
-pub const e1000_state_t___E1000_DOWN: e1000_state_t = 2;
+pub type E1000StateT = u32;
+pub const E1000_STATE_T_E1000_TESTING: E1000StateT = 0;
+pub const E1000_STATE_T_E1000_RESETTING: E1000StateT = 1;
+pub const E1000_STATE_T_E1000_DOWN: E1000StateT = 2;
+
+fn e1000_get_hw_dev(hw: &E1000Hw) -> NetDevice {
+    hw.back.netdev
+}
