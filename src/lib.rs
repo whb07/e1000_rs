@@ -1,6 +1,7 @@
 pub mod deps;
 pub mod e1000;
 pub mod e1000_hw;
+pub mod e1000_main;
 
 #[cfg(feature = "alloc")]
 extern crate alloc;

@@ -23,13 +23,15 @@ pub struct PciDeviceId {
     pub driver_data: u64,
 }
 
-fn intel_e1000_ethernet_device(device_id: u32) -> PciDeviceId {
+pub const fn intel_e1000_ethernet_device(device_id: u32) -> PciDeviceId {
     PciDeviceId {
         vendor: PCI_VENDOR_ID_INTEL,
         device: device_id,
         subvendor: PCI_ANY_ID,
         subdevice: PCI_ANY_ID,
-        ..Default::default()
+        class: 0x0,
+        class_mask: 0x0,
+        driver_data: 0x0
     }
 }
 
@@ -360,6 +362,3 @@ pub const E1000_STATE_T_E1000_TESTING: E1000StateT = 0;
 pub const E1000_STATE_T_E1000_RESETTING: E1000StateT = 1;
 pub const E1000_STATE_T_E1000_DOWN: E1000StateT = 2;
 
-fn e1000_get_hw_dev(hw: &E1000Hw) -> NetDevice {
-    hw.back.netdev
-}
