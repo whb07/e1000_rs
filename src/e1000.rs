@@ -4,7 +4,9 @@ use crate::deps::timer::{
     atomic_t, gro_list, hlist_node, hrtimer, list_head, spinlock_t,
     timer_list, work_struct,
 };
-use crate::e1000_hw::{c_void, E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
+
+use crate::deps::pci::{PciDev};
+use crate::e1000_hw::{E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
 
 use crate::lib::fmt::Formatter;
 
@@ -12,9 +14,9 @@ pub const PCI_VENDOR_ID_INTEL: u32 = 0x8086;
 pub const PCI_ANY_ID: u32 = !0;
 pub const IFNAMSIZ: usize = 16;
 
-pub type boolean_t = usize;
-pub const FALSE: boolean_t = 0;
-pub const TRUE: boolean_t = 1;
+pub type BooleanT = usize;
+pub const FALSE: BooleanT = 0;
+pub const TRUE: BooleanT = 1;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Default)]
@@ -120,11 +122,7 @@ pub struct Page {
     pub _address: u8,
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct PciDev {
-    pub _address: u8,
-}
+
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -135,10 +133,10 @@ pub struct NetDevice {
 pub const VLAN_GROUP_ARRAY_LEN: u32 = 4096;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct vlan_group {
+pub struct VlanGroup {
     pub real_dev_ifindex: i32,
     pub vlan_devices: [*mut NetDevice; 4096usize],
-    pub next: *mut vlan_group,
+    pub next: *mut VlanGroup,
 }
 
 #[repr(C)]
@@ -316,7 +314,7 @@ struct e1000_desc_ring {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct net_device_stats {
+pub struct NetDeviceStats {
     pub rx_packets: u64,
     pub tx_packets: u64,
     pub rx_bytes: u64,
@@ -347,7 +345,7 @@ pub struct net_device_stats {
 pub struct E1000Adapter<'a> {
     watchdog_timer: timer_list,
     phy_info_timer: timer_list,
-    vlgrp: &'a vlan_group,
+    vlgrp: &'a VlanGroup,
     id_string: &'a mut c_void,
     bd_number: u32,
     rx_buffer_len: u32,
@@ -375,12 +373,12 @@ pub struct E1000Adapter<'a> {
     hw_csum_good: u64,
     rx_int_delay: u32,
     rx_abs_int_delay: u32,
-    rx_csum: boolean_t,
+    rx_csum: BooleanT,
 
     /* OS defined structs */
     netdev: NetDevice,
     pdev: PciDev,
-    net_stats: net_device_stats,
+    net_stats: NetDeviceStats,
 
     /* structs defined in e1000_hw.h */
     hw: E1000Hw<'a>,

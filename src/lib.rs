@@ -108,6 +108,8 @@ mod lib {
 
     #[cfg(any(core_duration, feature = "std"))]
     pub use self::core::time::Duration;
+
+    pub type c_void = [u8; 0];
 }
 
 #[cfg(not(feature = "std"))]

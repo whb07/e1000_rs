@@ -20,6 +20,15 @@ pub struct seqcount {
 pub type seqcount_t = seqcount;
 
 #[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __wait_queue_head {
+    pub lock: spinlock_t,
+    pub task_list: list_head,
+}
+pub type wait_queue_head_t = __wait_queue_head;
+
+
+#[repr(C)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct __BindgenBitfieldUnit<Storage> {
     storage: Storage,
