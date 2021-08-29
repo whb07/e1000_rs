@@ -61,28 +61,28 @@ const E1000_PCI_TBL: &'static [PciDeviceId] = &[
 ];
 
 
-fn e1000_get_hw_dev(hw: &E1000Hw) -> NetDevice {
-    hw.back.netdev
-}
-
-// fn e1000_request_irq(adapter: &E1000Adapter) -> i32 {
-//     let netdev = adapter.netdev;
+// fn e1000_get_hw_dev(hw: &E1000Hw) -> NetDevice {
+//     hw.back.netdev
+// }
+//
+// // fn e1000_request_irq(adapter: &E1000Adapter) -> i32 {
+// //     let netdev = adapter.netdev;
+// //
+// // }
+//
+// pub fn e1000_irq_disable(adapter: &E1000Adapter){
+//     atomic_inc(adapter.irq_sem);
+// }
+//
+// pub fn e1000_down(adapter: &E1000Adapter){
+//     // let netdev: NetDevice = adapter.netdev;
 //
 // }
-
-pub fn e1000_irq_disable(adapter: &E1000Adapter){
-    atomic_inc(adapter.irq_sem);
-}
-
-pub fn e1000_down(adapter: &E1000Adapter){
-    let netdev: NetDevice = adapter.netdev;
-
-}
-
-
-
-pub fn e1000_tx_timeout(netdev: &NetDevice){
-    let x = Hello {counter: Cell::new(10)};
-    e1000_down(adapter);
-    e1000_up(adapter);
-}
+//
+//
+//
+// pub fn e1000_tx_timeout(netdev: &NetDevice){
+//     let x = Hello {counter: Cell::new(10)};
+//     e1000_down(adapter);
+//     e1000_up(adapter);
+// }

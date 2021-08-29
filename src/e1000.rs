@@ -7,6 +7,11 @@ use crate::lib::fmt::Formatter;
 
 pub const PCI_VENDOR_ID_INTEL: u32 = 0x8086;
 pub const PCI_ANY_ID: u32 = !0;
+pub const IFNAMSIZ:usize = 16;
+
+pub type boolean_t = usize;
+pub const FALSE:boolean_t = 0;
+pub const TRUE: boolean_t = 1;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Default)]
@@ -284,136 +289,107 @@ impl fmt::Debug for AllocFn {
     }
 }
 
+
+#[repr(C)]
+#[derive(Debug)]
+struct e1000_desc_ring {
+    /* pointer to the descriptor ring memory */
+    desc: c_void,
+    /* physical address of the descriptor ring */
+     dma:DmaAddrT,
+    /* length of descriptor ring in bytes */
+    size:u32,
+    /* number of descriptors in the ring */
+    count:u32,
+    /* (atomic) number of desc with no buffer */
+    unused:atomic_t,
+    /* number of desc with no buffer */
+    unused_count:u32,
+    /* next descriptor to associate a buffer with */
+    next_to_use: u32,
+    /* next descriptor to check for DD status bit */
+    next_to_clean: u32,
+    /* array of buffer information structs */
+    buffer_info:E1000Buffer,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct net_device_stats {
+    pub rx_packets: u64,
+    pub tx_packets: u64,
+    pub rx_bytes: u64,
+    pub tx_bytes: u64,
+    pub rx_errors: u64,
+    pub tx_errors: u64,
+    pub rx_dropped: u64,
+    pub tx_dropped: u64,
+    pub multicast: u64,
+    pub collisions: u64,
+    pub rx_length_errors: u64,
+    pub rx_over_errors: u64,
+    pub rx_crc_errors: u64,
+    pub rx_frame_errors: u64,
+    pub rx_fifo_errors: u64,
+    pub rx_missed_errors: u64,
+    pub tx_aborted_errors: u64,
+    pub tx_carrier_errors: u64,
+    pub tx_fifo_errors: u64,
+    pub tx_heartbeat_errors: u64,
+    pub tx_window_errors: u64,
+    pub rx_compressed: u64,
+    pub tx_compressed: u64,
+}
+
+
 #[repr(C)]
 #[derive(Debug)]
 pub struct E1000Adapter<'a> {
     watchdog_timer:timer_list,
     phy_info_timer:timer_list,
     vlgrp: &'a vlan_group,
-    id_string: u8m
-    uint32_t bd_number;
-    uint32_t rx_buffer_len;
-    uint32_t part_num;
-    uint32_t wol;
-    uint16_t link_speed;
-    uint16_t link_duplex;
-    spinlock_t stats_lock;
-    atomic_t irq_sem;
-    struct work_struct tx_timeout_task;
+    id_string: &'a mut c_void,
+     bd_number: u32,
+     rx_buffer_len: u32,
+     part_num: u32,
+     wol: u32,
+     link_speed: u16,
+     link_duplex: u16,
+    stats_lock: spinlock_t,
+    irq_sem: atomic_t,
+    tx_timeout_task:work_struct,
 
-    struct timer_list blink_timer;
-    unsigned long led_status;
+    blink_timer:timer_list,
+    led_status:u64,
 
     /* TX */
-    struct e1000_desc_ring tx_ring;
-    uint32_t txd_cmd;
-    uint32_t tx_int_delay;
-    uint32_t tx_abs_int_delay;
-    int max_data_per_txd;
+     tx_ring:e1000_desc_ring,
+     txd_cmd: u32,
+     tx_int_delay: u32,
+     tx_abs_int_delay: u32,
+    max_data_per_txd:i32,
 
     /* RX */
-    struct e1000_desc_ring rx_ring;
-    uint64_t hw_csum_err;
-    uint64_t hw_csum_good;
-    uint32_t rx_int_delay;
-    uint32_t rx_abs_int_delay;
-    boolean_t rx_csum;
+     rx_ring:e1000_desc_ring,
+    hw_csum_err: u64,
+    hw_csum_good:u64,
+     rx_int_delay: u32,
+     rx_abs_int_delay: u32,
+    rx_csum: boolean_t,
 
     /* OS defined structs */
-    struct net_device *netdev;
-    struct pci_dev *pdev;
-    struct net_device_stats net_stats;
+    netdev:NetDevice,
+    pdev:PciDev,
+    net_stats:net_device_stats,
 
     /* structs defined in e1000_hw.h */
-    struct e1000_hw hw;
-    struct e1000_hw_stats stats;
-    struct e1000_phy_info phy_info;
-    struct e1000_phy_stats phy_stats;
-
-    uint32_t pci_state[16];
-    char ifname[IFNAMSIZ];
-};
-
-#[repr(C)]
-#[derive(Debug)]
-pub struct E1000Adapter<'a> {
-    pub active_vlans: [u64; 64usize],
-    pub mng_vlan_id: u16,
-    pub bd_number: u32,
-    pub rx_buffer_len: u32,
-    pub wol: u32,
-    pub smartspeed: u32,
-    pub en_mng_pt: u32,
-    pub link_speed: u16,
-    pub link_duplex: u16,
-    pub stats_lock: spinlock_t,
-    pub total_tx_bytes: u32,
-    pub total_tx_packets: u32,
-    pub total_rx_bytes: u32,
-    pub total_rx_packets: u32,
-    pub itr: u32,
-    pub itr_setting: u32,
-    pub tx_itr: u16,
-    pub rx_itr: u16,
-    pub fc_autoneg: u8,
-    pub tx_ring: *mut E1000TxRing,
-    pub restart_queue: u32,
-    pub txd_cmd: u32,
-    pub tx_int_delay: u32,
-    pub tx_abs_int_delay: u32,
-    pub gotcl: u32,
-    pub gotcl_old: u64,
-    pub tpt_old: u64,
-    pub colc_old: u64,
-    pub tx_timeout_count: u32,
-    pub tx_fifo_head: u32,
-    pub tx_head_addr: u32,
-    pub tx_fifo_size: u32,
-    pub tx_timeout_factor: u8,
-    pub tx_fifo_stall: atomic_t,
-    pub pcix_82544: bool,
-    pub detect_tx_hung: bool,
-    pub dump_buffers: bool,
-    pub clean_rx: &'a CleanRxFn,
-    pub alloc_rx_buf: &'a AllocFn,
-    pub rx_ring: *mut E1000RxRing,
-    pub napi: NapiStruct,
-    pub num_tx_queues: i32,
-    pub num_rx_queues: i32,
-    pub hw_csum_err: u64,
-    pub hw_csum_good: u64,
-    pub alloc_rx_buff_failed: u32,
-    pub rx_int_delay: u32,
-    pub rx_abs_int_delay: u32,
-    pub rx_csum: bool,
-    pub gorcl: u32,
-    pub gorcl_old: u64,
-    pub netdev: NetDevice,
-    pub pdev: *mut PciDev,
-    pub hw: &'a E1000Hw<'a>,
-    pub stats: E1000HwStats,
-    pub phy_info: E1000PhyInfo,
-    pub phy_stats: E1000PhyStats,
-    pub test_icr: u32,
-    pub test_tx_ring: E1000TxRing,
-    pub test_rx_ring: E1000RxRing,
-    pub msg_enable: i32,
-    pub tso_force: bool,
-    pub smart_power_down: bool,
-    pub quad_port_a: bool,
-    pub flags: u64,
-    pub eeprom_wol: u32,
-    pub bars: i32,
-    pub need_ioport: i32,
-    pub discarding: bool,
-    pub reset_task: work_struct,
-    pub __bindgen_padding_0: [u64; 4usize],
-    pub watchdog_task: delayed_work,
-    pub fifo_stall_task: delayed_work,
-    pub phy_info_task: delayed_work,
-    pub mutex: mutex,
+    hw: E1000Hw<'a>,
+    stats: E1000HwStats,
+    phy_info: E1000PhyInfo,
+    phy_stats: E1000PhyStats,
+    pci_state: [u32;16],
+    ifname:[u8;IFNAMSIZ],
 }
-
 
 pub type E1000StateT = u32;
 pub const E1000_STATE_T_E1000_TESTING: E1000StateT = 0;
