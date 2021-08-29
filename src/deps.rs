@@ -1,3 +1,5 @@
+pub mod timer;
+
 pub const NR_IRQS: u32 = 224;
 pub const EPERM: u32 = 1;
 pub const ENOENT: u32 = 2;
