@@ -4,7 +4,8 @@ use crate::deps::timer::{
     atomic_t, gro_list, hlist_node, hrtimer, list_head, spinlock_t, timer_list, work_struct,
 };
 
-use crate::deps::pci::PciDev;
+use crate::deps::pci::{PciDev};
+use crate::deps::{NetDeviceStats, SkBuff, NetDevice};
 use crate::e1000_hw::{E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
 
 use crate::lib::fmt::Formatter;
@@ -109,11 +110,7 @@ pub const E1000_MNG_VLAN_NONE: i32 = -1;
 
 pub type DmaAddrT = u32;
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct SkBuff {
-    pub _address: u8,
-}
+
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -121,11 +118,7 @@ pub struct Page {
     pub _address: u8,
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct NetDevice {
-    pub _address: u8,
-}
+
 
 pub const VLAN_GROUP_ARRAY_LEN: u32 = 4096;
 #[repr(C)]
@@ -309,33 +302,7 @@ struct e1000_desc_ring {
     buffer_info: E1000Buffer,
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct NetDeviceStats {
-    pub rx_packets: u64,
-    pub tx_packets: u64,
-    pub rx_bytes: u64,
-    pub tx_bytes: u64,
-    pub rx_errors: u64,
-    pub tx_errors: u64,
-    pub rx_dropped: u64,
-    pub tx_dropped: u64,
-    pub multicast: u64,
-    pub collisions: u64,
-    pub rx_length_errors: u64,
-    pub rx_over_errors: u64,
-    pub rx_crc_errors: u64,
-    pub rx_frame_errors: u64,
-    pub rx_fifo_errors: u64,
-    pub rx_missed_errors: u64,
-    pub tx_aborted_errors: u64,
-    pub tx_carrier_errors: u64,
-    pub tx_fifo_errors: u64,
-    pub tx_heartbeat_errors: u64,
-    pub tx_window_errors: u64,
-    pub rx_compressed: u64,
-    pub tx_compressed: u64,
-}
+
 
 #[repr(C)]
 #[derive(Debug)]

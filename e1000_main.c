@@ -140,7 +140,7 @@ static irqreturn_t e1000_intr_msi(int irq, void *data);
 static boolean_t e1000_clean_tx_irq(struct e1000_adapter *adapter,
                                     struct e1000_tx_ring *tx_ring);
 #ifdef CONFIG_E1000_NAPI
-static int e1000_clean(struct net_device *poll_dev, int *budget);
+static int e1000_clean(struct NetDevice *poll_dev, int *budget);
 static boolean_t e1000_clean_rx_irq(struct e1000_adapter *adapter,
                                     struct e1000_rx_ring *rx_ring,
                                     int *work_done, int work_to_do);
@@ -184,7 +184,7 @@ static void e1000_shutdown(struct pci_dev *pdev);
 
 #ifdef CONFIG_NET_POLL_CONTROLLER
 /* for netdump / net console */
-static void e1000_netpoll (struct net_device *netdev);
+static void e1000_netpoll (struct NetDevice *netdev);
 #endif
 
 extern void e1000_check_options(struct e1000_adapter *adapter);
@@ -1344,7 +1344,7 @@ e1000_alloc_queues(struct e1000_adapter *adapter)
 
 #ifdef CONFIG_E1000_NAPI
 	adapter->polling_netdev = kcalloc(adapter->num_rx_queues,
-	                                  sizeof(struct net_device),
+	                                  sizeof(struct NetDevice),
 	                                  GFP_KERNEL);
 	if (!adapter->polling_netdev) {
 		kfree(adapter->tx_ring);
@@ -3898,7 +3898,7 @@ e1000_intr(int irq, void *data)
  **/
 
 static int
-e1000_clean(struct net_device *poll_dev, int *budget)
+e1000_clean(struct NetDevice *poll_dev, int *budget)
 {
 	struct e1000_adapter *adapter;
 	int work_to_do = min(*budget, poll_dev->quota);
@@ -5148,7 +5148,7 @@ e1000_suspend(struct pci_dev *pdev, pm_message_t state)
 static int
 e1000_resume(struct PciDev *pdev)
 {
-	struct net_device *netdev = pci_get_drvdata(pdev);
+	struct NetDevice *netdev = pci_get_drvdata(pdev);
 	struct e1000_adapter *adapter = netdev_priv(netdev);
 	uint32_t err;
 
@@ -5201,7 +5201,7 @@ static void e1000_shutdown(struct pci_dev *pdev)
  * the interrupt routine is executing.
  */
 static void
-e1000_netpoll(struct net_device *netdev)
+e1000_netpoll(struct NetDevice *netdev)
 {
 	struct e1000_adapter *adapter = netdev_priv(netdev);
 

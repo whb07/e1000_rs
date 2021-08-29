@@ -1,6 +1,5 @@
-use crate::deps::timer::{atomic_t, spinlock_t, wait_queue_head_t};
+use crate::deps::timer::{atomic_t, spinlock_t, wait_queue_head_t, timer_list, hlist_node};
 use crate::lib::c_void;
-use crate::e1000::NetDevice;
 
 pub mod pci;
 pub mod timer;
@@ -360,7 +359,7 @@ pub struct dev_archdata {}
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct device {
+pub struct device<'a> {
     pub klist_children: klist,
     pub knode_parent: klist_node,
     pub knode_driver: klist_node,
@@ -376,7 +375,7 @@ pub struct device {
     pub sem: semaphore,
     pub bus: *mut bus_type,
     pub driver: *mut device_driver,
-    pub driver_data: NetDevice,
+    pub driver_data: &'a NetDevice,
     pub platform_data: *mut ::std::os::raw::c_void,
     pub power: dev_pm_info,
     pub dma_mask: *mut u64,
@@ -483,6 +482,264 @@ pub struct class {
     pub suspend:
         ::std::option::Option<unsafe extern "C" fn(arg1: *mut device, state: pm_message_t) -> i32>,
     pub resume: ::std::option::Option<unsafe extern "C" fn(arg1: *mut device) -> i32>,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct NetDeviceStats {
+    pub rx_packets: u64,
+    pub tx_packets: u64,
+    pub rx_bytes: u64,
+    pub tx_bytes: u64,
+    pub rx_errors: u64,
+    pub tx_errors: u64,
+    pub rx_dropped: u64,
+    pub tx_dropped: u64,
+    pub multicast: u64,
+    pub collisions: u64,
+    pub rx_length_errors: u64,
+    pub rx_over_errors: u64,
+    pub rx_crc_errors: u64,
+    pub rx_frame_errors: u64,
+    pub rx_fifo_errors: u64,
+    pub rx_missed_errors: u64,
+    pub tx_aborted_errors: u64,
+    pub tx_carrier_errors: u64,
+    pub tx_fifo_errors: u64,
+    pub tx_heartbeat_errors: u64,
+    pub tx_window_errors: u64,
+    pub rx_compressed: u64,
+    pub tx_compressed: u64,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ethtool_ops {
+    pub _address: u8,
+}
+
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct dev_mc_list {
+    pub _address: u8,
+}
+
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct wireless_dev {
+    pub _address: u8,
+}
+
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct Qdisc {
+    pub _address: u8,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct SkBuff {
+    pub _address: u8,
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ifreq {
+    _unused: [u8; 0],
+}
+
+pub type net_device__bindgen_ty_1 = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ifmap {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct neighbour {
+    _unused: [u8; 0],
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct hh_cache {
+    _unused: [u8; 0],
+}
+
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct vlan_group {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct neigh_parms {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct net_bridge_port {
+    pub _address: u8,
+}
+
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct NetDevice {
+    pub name: [i8; 16usize],
+    pub name_hlist: hlist_node,
+    pub mem_end: u64,
+    pub mem_start: u64,
+    pub base_addr: u64,
+    pub irq: u32,
+    pub if_port: u8,
+    pub dma: u8,
+    pub state: u64,
+    pub dev_list: list_head,
+    pub init:
+    ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice) -> i32>,
+    pub features: u64,
+    pub next_sched: *mut NetDevice,
+    pub ifindex: i32,
+    pub iflink: i32,
+    pub get_stats:
+    ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice) -> *mut NetDeviceStats>,
+    pub stats: NetDeviceStats,
+    pub ethtool_ops: *mut ethtool_ops,
+    pub flags: u32,
+    pub gflags: u16,
+    pub priv_flags: u16,
+    pub padded: u16,
+    pub operstate: u8,
+    pub link_mode: u8,
+    pub mtu: u32,
+    pub type_: u16,
+    pub hard_header_len: u16,
+    pub master: *mut NetDevice,
+    pub perm_addr: [u8; 32usize],
+    pub addr_len: u8,
+    pub dev_id: u16,
+    pub mc_list: *mut dev_mc_list,
+    pub mc_count: i32,
+    pub promiscuity: i32,
+    pub allmulti: i32,
+    pub atalk_ptr: *mut ::std::os::raw::c_void,
+    pub ip_ptr: *mut ::std::os::raw::c_void,
+    pub dn_ptr: *mut ::std::os::raw::c_void,
+    pub ip6_ptr: *mut ::std::os::raw::c_void,
+    pub ec_ptr: *mut ::std::os::raw::c_void,
+    pub ax25_ptr: *mut ::std::os::raw::c_void,
+    pub ieee80211_ptr: *mut wireless_dev,
+    pub poll_list: list_head,
+    pub poll: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut NetDevice,
+            quota: *mut i32,
+        ) -> i32,
+    >,
+    pub quota: i32,
+    pub weight: i32,
+    pub last_rx: u64,
+    pub dev_addr: [u8; 32usize],
+    pub broadcast: [u8; 32usize],
+    pub queue_lock: spinlock_t,
+    pub qdisc: *mut Qdisc,
+    pub qdisc_sleeping: *mut Qdisc,
+    pub qdisc_list: list_head,
+    pub tx_queue_len: u64,
+    pub gso_skb: *mut SkBuff,
+    pub ingress_lock: spinlock_t,
+    pub qdisc_ingress: *mut Qdisc,
+    pub _xmit_lock: spinlock_t,
+    pub xmit_lock_owner: i32,
+    pub priv_: *mut ::std::os::raw::c_void,
+    pub hard_start_xmit: ::std::option::Option<
+        unsafe extern "C" fn(skb: *mut SkBuff, dev: *mut NetDevice) -> i32,
+    >,
+    pub trans_start: u64,
+    pub watchdog_timeo: i32,
+    pub watchdog_timer: timer_list,
+    pub refcnt: atomic_t,
+    pub todo_list: list_head,
+    pub index_hlist: hlist_node,
+    pub link_watch_next: *mut NetDevice,
+    pub reg_state: net_device__bindgen_ty_1,
+    pub uninit: ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice)>,
+    pub destructor: ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice)>,
+    pub open:
+    ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice) -> i32>,
+    pub stop:
+    ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice) -> i32>,
+    pub hard_header: ::std::option::Option<
+        unsafe extern "C" fn(
+            skb: *mut SkBuff,
+            dev: *mut NetDevice,
+            type_: u16,
+            daddr: *mut ::std::os::raw::c_void,
+            saddr: *mut ::std::os::raw::c_void,
+            len: u32,
+        ) -> i32,
+    >,
+    pub rebuild_header:
+    ::std::option::Option<unsafe extern "C" fn(skb: *mut SkBuff) -> i32>,
+    pub set_multicast_list: ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice)>,
+    pub set_mac_address: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut NetDevice,
+            addr: *mut ::std::os::raw::c_void,
+        ) -> i32,
+    >,
+    pub do_ioctl: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut NetDevice,
+            ifr: *mut ifreq,
+            cmd: i32,
+        ) -> i32,
+    >,
+    pub set_config: ::std::option::Option<
+        unsafe extern "C" fn(dev: *mut NetDevice, map: *mut ifmap) -> i32,
+    >,
+    pub hard_header_cache: ::std::option::Option<
+        unsafe extern "C" fn(neigh: *mut neighbour, hh: *mut hh_cache) -> i32,
+    >,
+    pub header_cache_update: ::std::option::Option<
+        unsafe extern "C" fn(
+            hh: *mut hh_cache,
+            dev: *mut NetDevice,
+            haddr: *mut u8,
+        ),
+    >,
+    pub change_mtu: ::std::option::Option<
+        unsafe extern "C" fn(
+            dev: *mut NetDevice,
+            new_mtu: i32,
+        ) -> i32,
+    >,
+    pub tx_timeout: ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice)>,
+    pub vlan_rx_register:
+    ::std::option::Option<unsafe extern "C" fn(dev: *mut NetDevice, grp: *mut vlan_group)>,
+    pub vlan_rx_add_vid: ::std::option::Option<
+        unsafe extern "C" fn(dev: *mut NetDevice, vid: u16),
+    >,
+    pub vlan_rx_kill_vid: ::std::option::Option<
+        unsafe extern "C" fn(dev: *mut NetDevice, vid: u16),
+    >,
+    pub hard_header_parse: ::std::option::Option<
+        unsafe extern "C" fn(
+            skb: *mut SkBuff,
+            haddr: *mut u8,
+        ) -> i32,
+    >,
+    pub neigh_setup: ::std::option::Option<
+        unsafe extern "C" fn(dev: *mut NetDevice, arg1: *mut neigh_parms) -> i32,
+    >,
+    pub br_port: *mut net_bridge_port,
+    pub dev: device,
+    pub sysfs_groups: [*mut attribute_group; 3usize],
 }
 
 #[repr(C)]

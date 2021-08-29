@@ -1,5 +1,6 @@
 use crate::deps::pci::PciDev;
-use crate::e1000::{intel_e1000_ethernet_device, NetDevice, PciDeviceId};
+use crate::e1000::{intel_e1000_ethernet_device, PciDeviceId};
+use crate::deps::{NetDevice};
 
 use crate::lib::*;
 
@@ -70,5 +71,6 @@ fn pci_get_drvdata(pdev: &PciDev) -> NetDevice{
 //
 pub fn e1000_io_resume(pdev: &PciDev){
     let netdev: NetDevice = pci_get_drvdata(pdev);
+    // let adapter = netdev.priv;
 
 }
