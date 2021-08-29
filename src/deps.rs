@@ -1,5 +1,6 @@
 use crate::deps::timer::{atomic_t, spinlock_t, wait_queue_head_t};
 use crate::lib::c_void;
+use crate::e1000::NetDevice;
 
 pub mod pci;
 pub mod timer;
@@ -375,7 +376,7 @@ pub struct device {
     pub sem: semaphore,
     pub bus: *mut bus_type,
     pub driver: *mut device_driver,
-    pub driver_data: *mut c_void,
+    pub driver_data: NetDevice,
     pub platform_data: *mut ::std::os::raw::c_void,
     pub power: dev_pm_info,
     pub dma_mask: *mut u64,

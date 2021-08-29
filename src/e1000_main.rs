@@ -64,11 +64,11 @@ const E1000_PCI_TBL: &[PciDeviceId] = &[
 //     hw.back.netdev
 // }
 
-fn pci_get_drvdata(pdev: PciDev) -> *mut c_void {
+fn pci_get_drvdata(pdev: &PciDev) -> NetDevice{
     pdev.dev.driver_data
 }
 //
-// pub fn e1000_io_resume(pdev: &PciDev){
-//     let netdev: NetDevice = pci_get_drvdata(pdev);
+pub fn e1000_io_resume(pdev: &PciDev){
+    let netdev: NetDevice = pci_get_drvdata(pdev);
 
-// }
+}
