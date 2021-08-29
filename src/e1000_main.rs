@@ -1,6 +1,6 @@
-use crate::deps::{EINVAL, ENOMEM, NR_IRQS};
-use crate::e1000::{intel_e1000_ethernet_device, E1000Adapter, NetDevice, PciDeviceId};
-use crate::e1000_hw::{c_void, E1000Hw};
+
+use crate::e1000::{intel_e1000_ethernet_device, NetDevice, PciDeviceId};
+
 use crate::lib::*;
 
 pub const IRQRETURN_IRQ_NONE: Irqreturn = 0;
@@ -8,7 +8,7 @@ pub const IRQRETURN_IRQ_HANDLED: Irqreturn = 1;
 pub const IRQRETURN_IRQ_WAKE_THREAD: Irqreturn = 2;
 pub type Irqreturn = u32;
 
-pub fn e1000_intr(irq: i32, data: &NetDevice) -> Irqreturn {
+pub fn e1000_intr(_irq: i32, _data: &NetDevice) -> Irqreturn {
     IRQRETURN_IRQ_NONE
 }
 
@@ -20,7 +20,7 @@ pub fn atomic_inc(n: &mut atomic_t) {
     n.counter.set(n.counter.get() + 1);
 }
 
-const E1000_PCI_TBL: &'static [PciDeviceId] = &[
+const E1000_PCI_TBL: &[PciDeviceId] = &[
     intel_e1000_ethernet_device(0x1000),
     intel_e1000_ethernet_device(0x1001),
     intel_e1000_ethernet_device(0x1004),

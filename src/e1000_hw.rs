@@ -2044,9 +2044,9 @@ pub const FLOW_CONTROL_ADDRESS_LOW: u32 = 0x00C28001;
 pub const FLOW_CONTROL_ADDRESS_HIGH: u32 = 0x00000100;
 pub const FLOW_CONTROL_TYPE: u32 = 0x8808;
 
-pub const FC_DEFAULT_HI_THRESH: u32 = (0x8000);
-pub const FC_DEFAULT_LO_THRESH: u32 = (0x4000);
-pub const FC_DEFAULT_TX_TIMER: u32 = (0x100);
+pub const FC_DEFAULT_HI_THRESH: u32 = 0x8000;
+pub const FC_DEFAULT_LO_THRESH: u32 = 0x4000;
+pub const FC_DEFAULT_TX_TIMER: u32 = 0x100;
 
 pub const PCIX_COMMAND_REGISTER: u32 = 0xE6;
 pub const PCIX_STATUS_REGISTER_LO: u32 = 0xE8;
@@ -2067,7 +2067,7 @@ pub const SWDPIO__EXT_SHIFT: u32 = 4;
 
 pub const ILOS_SHIFT: u32 = 3;
 
-pub const RECEIVE_BUFFER_ALIGN_SIZE: u32 = (256);
+pub const RECEIVE_BUFFER_ALIGN_SIZE: u32 = 256;
 
 pub const LINK_UP_TIMEOUT: u32 = 500;
 

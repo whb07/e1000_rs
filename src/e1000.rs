@@ -1,7 +1,7 @@
 use crate::lib::*;
 
 use crate::deps::timer::{
-    atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t,
+    atomic_t, gro_list, hlist_node, hrtimer, list_head, spinlock_t,
     timer_list, work_struct,
 };
 use crate::e1000_hw::{c_void, E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
