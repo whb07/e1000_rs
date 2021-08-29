@@ -1,9 +1,8 @@
 use crate::deps::timer::{atomic_t, spinlock_t, wait_queue_head_t};
-use crate::lib::{c_void};
+use crate::lib::c_void;
 
-pub mod timer;
 pub mod pci;
-
+pub mod timer;
 
 pub type mode_t = u16;
 pub type ssize_t = i32;
@@ -71,14 +70,12 @@ pub const ENOANO: u32 = 55;
 pub const EBADRQC: u32 = 56;
 pub const EBADSLT: u32 = 57;
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct list_head {
     pub next: *mut list_head,
     pub prev: *mut list_head,
 }
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -144,7 +141,6 @@ pub struct kobject {
     pub poll: wait_queue_head_t,
 }
 
-
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct __BindgenBitfieldUnit<Storage> {
@@ -157,8 +153,8 @@ impl<Storage> __BindgenBitfieldUnit<Storage> {
     }
 }
 impl<Storage> __BindgenBitfieldUnit<Storage>
-    where
-        Storage: AsRef<[u8]> + AsMut<[u8]>,
+where
+    Storage: AsRef<[u8]> + AsMut<[u8]>,
 {
     #[inline]
     pub fn get_bit(&self, index: usize) -> bool {
@@ -234,7 +230,6 @@ pub struct semaphore {
     pub wait: wait_queue_head_t,
 }
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct module {
@@ -262,13 +257,11 @@ pub struct class_device {
     _unused: [u8; 0],
 }
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct attribute_group {
     pub _address: u8,
 }
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -344,9 +337,7 @@ impl dev_pm_info {
         }
     }
     #[inline]
-    pub fn new_bitfield_1(
-        can_wakeup: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+    pub fn new_bitfield_1(can_wakeup: u32) -> __BindgenBitfieldUnit<[u8; 1usize]> {
         let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
         __bindgen_bitfield_unit.set(0usize, 1u8, {
             let can_wakeup: u32 = unsafe { ::std::mem::transmute(can_wakeup) };
@@ -356,19 +347,15 @@ impl dev_pm_info {
     }
 }
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct dma_coherent_mem {
     pub _address: u8,
 }
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct dev_archdata {}
-
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -457,8 +444,6 @@ pub struct resource {
     pub child: *mut resource,
 }
 
-
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct class {
@@ -494,11 +479,9 @@ pub struct class {
     pub release: ::std::option::Option<unsafe extern "C" fn(dev: *mut class_device)>,
     pub class_release: ::std::option::Option<unsafe extern "C" fn(class: *mut class)>,
     pub dev_release: ::std::option::Option<unsafe extern "C" fn(dev: *mut device)>,
-    pub suspend: ::std::option::Option<
-        unsafe extern "C" fn(arg1: *mut device, state: pm_message_t) -> i32,
-    >,
-    pub resume:
-    ::std::option::Option<unsafe extern "C" fn(arg1: *mut device) -> i32>,
+    pub suspend:
+        ::std::option::Option<unsafe extern "C" fn(arg1: *mut device, state: pm_message_t) -> i32>,
+    pub resume: ::std::option::Option<unsafe extern "C" fn(arg1: *mut device) -> i32>,
 }
 
 #[repr(C)]

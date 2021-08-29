@@ -1,9 +1,7 @@
-
+use crate::deps::pci::PciDev;
 use crate::e1000::{intel_e1000_ethernet_device, NetDevice, PciDeviceId};
-use crate::deps::pci::{PciDev};
 
 use crate::lib::*;
-
 
 pub const IRQRETURN_IRQ_NONE: Irqreturn = 0;
 pub const IRQRETURN_IRQ_HANDLED: Irqreturn = 1;

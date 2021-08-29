@@ -1,18 +1,15 @@
-use crate::deps::{list_head, klist, klist_node, kobject, __BindgenBitfieldUnit,
-                  semaphore, class, module, device_attribute, attribute_group, resource, device};
-use crate::deps::timer::{spinlock_t, atomic_t, hlist_head};
+use crate::deps::timer::{atomic_t, hlist_head};
+use crate::deps::{__BindgenBitfieldUnit, device, list_head, resource};
 
 pub type pci_power_t = i32;
 
 pub type pci_channel_state_t = u32;
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct bin_attribute {
     pub _address: u8,
 }
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -31,12 +28,6 @@ pub struct proc_dir_entry {
 pub struct pci_driver {
     pub _address: u8,
 }
-
-
-
-
-
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

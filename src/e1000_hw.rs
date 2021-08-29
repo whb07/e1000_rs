@@ -1,5 +1,5 @@
 use crate::e1000::E1000Adapter;
-use crate::lib::{c_void};
+use crate::lib::c_void;
 
 pub type __le32 = u32;
 pub type __le16 = u16;

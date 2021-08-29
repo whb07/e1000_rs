@@ -1,11 +1,10 @@
 use crate::lib::*;
 
 use crate::deps::timer::{
-    atomic_t, gro_list, hlist_node, hrtimer, list_head, spinlock_t,
-    timer_list, work_struct,
+    atomic_t, gro_list, hlist_node, hrtimer, list_head, spinlock_t, timer_list, work_struct,
 };
 
-use crate::deps::pci::{PciDev};
+use crate::deps::pci::PciDev;
 use crate::e1000_hw::{E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
 
 use crate::lib::fmt::Formatter;
@@ -121,8 +120,6 @@ pub struct SkBuff {
 pub struct Page {
     pub _address: u8,
 }
-
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
