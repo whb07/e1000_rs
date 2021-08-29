@@ -6,7 +6,6 @@ pub type __le16 = u16;
 
 pub type __le64 = u64;
 
-
 pub const E1000_MAC_TYPE_E1000_UNDEFINED: E1000MacType = 0;
 pub const E1000_MAC_TYPE_E1000_82542_REV2_0: E1000MacType = 1;
 pub const E1000_MAC_TYPE_E1000_82542_REV2_1: E1000MacType = 2;

@@ -1,16 +1,19 @@
 use crate::lib::*;
 
-use crate::deps::timer::{atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t, work_struct, timer_list};
+use crate::deps::timer::{
+    atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t,
+    timer_list, work_struct,
+};
 use crate::e1000_hw::{c_void, E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
 
 use crate::lib::fmt::Formatter;
 
 pub const PCI_VENDOR_ID_INTEL: u32 = 0x8086;
 pub const PCI_ANY_ID: u32 = !0;
-pub const IFNAMSIZ:usize = 16;
+pub const IFNAMSIZ: usize = 16;
 
 pub type boolean_t = usize;
-pub const FALSE:boolean_t = 0;
+pub const FALSE: boolean_t = 0;
 pub const TRUE: boolean_t = 1;
 
 #[repr(C)]
@@ -33,7 +36,7 @@ pub const fn intel_e1000_ethernet_device(device_id: u32) -> PciDeviceId {
         subdevice: PCI_ANY_ID,
         class: 0x0,
         class_mask: 0x0,
-        driver_data: 0x0
+        driver_data: 0x0,
     }
 }
 
@@ -137,7 +140,6 @@ pub struct vlan_group {
     pub vlan_devices: [*mut NetDevice; 4096usize],
     pub next: *mut vlan_group,
 }
-
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -289,28 +291,27 @@ impl fmt::Debug for AllocFn {
     }
 }
 
-
 #[repr(C)]
 #[derive(Debug)]
 struct e1000_desc_ring {
     /* pointer to the descriptor ring memory */
     desc: c_void,
     /* physical address of the descriptor ring */
-     dma:DmaAddrT,
+    dma: DmaAddrT,
     /* length of descriptor ring in bytes */
-    size:u32,
+    size: u32,
     /* number of descriptors in the ring */
-    count:u32,
+    count: u32,
     /* (atomic) number of desc with no buffer */
-    unused:atomic_t,
+    unused: atomic_t,
     /* number of desc with no buffer */
-    unused_count:u32,
+    unused_count: u32,
     /* next descriptor to associate a buffer with */
     next_to_use: u32,
     /* next descriptor to check for DD status bit */
     next_to_clean: u32,
     /* array of buffer information structs */
-    buffer_info:E1000Buffer,
+    buffer_info: E1000Buffer,
 }
 
 #[repr(C)]
@@ -341,58 +342,56 @@ pub struct net_device_stats {
     pub tx_compressed: u64,
 }
 
-
 #[repr(C)]
 #[derive(Debug)]
 pub struct E1000Adapter<'a> {
-    watchdog_timer:timer_list,
-    phy_info_timer:timer_list,
+    watchdog_timer: timer_list,
+    phy_info_timer: timer_list,
     vlgrp: &'a vlan_group,
     id_string: &'a mut c_void,
-     bd_number: u32,
-     rx_buffer_len: u32,
-     part_num: u32,
-     wol: u32,
-     link_speed: u16,
-     link_duplex: u16,
+    bd_number: u32,
+    rx_buffer_len: u32,
+    part_num: u32,
+    wol: u32,
+    link_speed: u16,
+    link_duplex: u16,
     stats_lock: spinlock_t,
     irq_sem: atomic_t,
-    tx_timeout_task:work_struct,
+    tx_timeout_task: work_struct,
 
-    blink_timer:timer_list,
-    led_status:u64,
+    blink_timer: timer_list,
+    led_status: u64,
 
     /* TX */
-     tx_ring:e1000_desc_ring,
-     txd_cmd: u32,
-     tx_int_delay: u32,
-     tx_abs_int_delay: u32,
-    max_data_per_txd:i32,
+    tx_ring: e1000_desc_ring,
+    txd_cmd: u32,
+    tx_int_delay: u32,
+    tx_abs_int_delay: u32,
+    max_data_per_txd: i32,
 
     /* RX */
-     rx_ring:e1000_desc_ring,
+    rx_ring: e1000_desc_ring,
     hw_csum_err: u64,
-    hw_csum_good:u64,
-     rx_int_delay: u32,
-     rx_abs_int_delay: u32,
+    hw_csum_good: u64,
+    rx_int_delay: u32,
+    rx_abs_int_delay: u32,
     rx_csum: boolean_t,
 
     /* OS defined structs */
-    netdev:NetDevice,
-    pdev:PciDev,
-    net_stats:net_device_stats,
+    netdev: NetDevice,
+    pdev: PciDev,
+    net_stats: net_device_stats,
 
     /* structs defined in e1000_hw.h */
     hw: E1000Hw<'a>,
     stats: E1000HwStats,
     phy_info: E1000PhyInfo,
     phy_stats: E1000PhyStats,
-    pci_state: [u32;16],
-    ifname:[u8;IFNAMSIZ],
+    pci_state: [u32; 16],
+    ifname: [u8; IFNAMSIZ],
 }
 
 pub type E1000StateT = u32;
 pub const E1000_STATE_T_E1000_TESTING: E1000StateT = 0;
 pub const E1000_STATE_T_E1000_RESETTING: E1000StateT = 1;
 pub const E1000_STATE_T_E1000_DOWN: E1000StateT = 2;
-
