@@ -12,6 +12,14 @@ pub fn e1000_intr(irq:i32, data:&NetDevice) -> Irqreturn {
     IRQRETURN_IRQ_NONE
 }
 
+pub struct atomic_t {
+    counter: Cell<i32>
+}
+
+pub fn atomic_inc(n:&mut atomic_t){
+    n.counter.set(n.counter.get() + 1);
+}
+
 const E1000_PCI_TBL: &'static [PciDeviceId] = &[
     intel_e1000_ethernet_device(0x1000),
     intel_e1000_ethernet_device(0x1001),
@@ -57,7 +65,24 @@ fn e1000_get_hw_dev(hw: &E1000Hw) -> NetDevice {
     hw.back.netdev
 }
 
-fn e1000_request_irq(adapter: &E1000Adapter) -> i32 {
-    let netdev = adapter.netdev;
+// fn e1000_request_irq(adapter: &E1000Adapter) -> i32 {
+//     let netdev = adapter.netdev;
+//
+// }
 
+pub fn e1000_irq_disable(adapter: &E1000Adapter){
+    atomic_inc(adapter.irq_sem);
+}
+
+pub fn e1000_down(adapter: &E1000Adapter){
+    let netdev: NetDevice = adapter.netdev;
+
+}
+
+
+
+pub fn e1000_tx_timeout(netdev: &NetDevice){
+    let x = Hello {counter: Cell::new(10)};
+    e1000_down(adapter);
+    e1000_up(adapter);
 }

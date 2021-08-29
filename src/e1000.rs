@@ -1,9 +1,6 @@
 use crate::lib::*;
 
-use crate::deps::timer::{
-    atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t,
-    work_struct,
-};
+use crate::deps::timer::{atomic_t, delayed_work, gro_list, hlist_node, hrtimer, list_head, mutex, spinlock_t, work_struct, timer_list};
 use crate::e1000_hw::{c_void, E1000Hw, E1000HwStats, E1000PhyInfo, E1000PhyStats, E1000TxDesc};
 
 use crate::lib::fmt::Formatter;
@@ -126,6 +123,16 @@ pub struct PciDev {
 pub struct NetDevice {
     pub _address: u8,
 }
+
+pub const VLAN_GROUP_ARRAY_LEN: u32 = 4096;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct vlan_group {
+    pub real_dev_ifindex: i32,
+    pub vlan_devices: [*mut NetDevice; 4096usize],
+    pub next: *mut vlan_group,
+}
+
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -280,6 +287,56 @@ impl fmt::Debug for AllocFn {
 #[repr(C)]
 #[derive(Debug)]
 pub struct E1000Adapter<'a> {
+    watchdog_timer:timer_list,
+    phy_info_timer:timer_list,
+    vlgrp: &'a vlan_group,
+    id_string: u8m
+    uint32_t bd_number;
+    uint32_t rx_buffer_len;
+    uint32_t part_num;
+    uint32_t wol;
+    uint16_t link_speed;
+    uint16_t link_duplex;
+    spinlock_t stats_lock;
+    atomic_t irq_sem;
+    struct work_struct tx_timeout_task;
+
+    struct timer_list blink_timer;
+    unsigned long led_status;
+
+    /* TX */
+    struct e1000_desc_ring tx_ring;
+    uint32_t txd_cmd;
+    uint32_t tx_int_delay;
+    uint32_t tx_abs_int_delay;
+    int max_data_per_txd;
+
+    /* RX */
+    struct e1000_desc_ring rx_ring;
+    uint64_t hw_csum_err;
+    uint64_t hw_csum_good;
+    uint32_t rx_int_delay;
+    uint32_t rx_abs_int_delay;
+    boolean_t rx_csum;
+
+    /* OS defined structs */
+    struct net_device *netdev;
+    struct pci_dev *pdev;
+    struct net_device_stats net_stats;
+
+    /* structs defined in e1000_hw.h */
+    struct e1000_hw hw;
+    struct e1000_hw_stats stats;
+    struct e1000_phy_info phy_info;
+    struct e1000_phy_stats phy_stats;
+
+    uint32_t pci_state[16];
+    char ifname[IFNAMSIZ];
+};
+
+#[repr(C)]
+#[derive(Debug)]
+pub struct E1000Adapter<'a> {
     pub active_vlans: [u64; 64usize],
     pub mng_vlan_id: u16,
     pub bd_number: u32,
@@ -356,6 +413,7 @@ pub struct E1000Adapter<'a> {
     pub phy_info_task: delayed_work,
     pub mutex: mutex,
 }
+
 
 pub type E1000StateT = u32;
 pub const E1000_STATE_T_E1000_TESTING: E1000StateT = 0;
